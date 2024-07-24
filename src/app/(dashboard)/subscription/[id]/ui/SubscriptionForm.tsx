@@ -21,13 +21,13 @@ interface FormInputs {
   amount: number;
   clientId: { label: string; value: string; };
   comment: string | null;
+  creditCardId: string | null;
   dateStart: string;
   dateLastPay: string;
   delivery: string | null;
   paymentMethod: 'MercadoPago' | 'FirstData' | 'Visa' | 'Stripe' | 'Multipago' | 'CobroYa' | 'TransferenciaBancaria' | 'AbitabNet';
   period: 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual';
   planId: string;
-  creditCardId: string | null;
 }
 
 const periods = ['Mensual', 'Trimestral', 'Semestral', 'Anual'];
@@ -92,6 +92,7 @@ export const SubscriptionForm = ({ plans, clients, subscription, cards }: Props)
       dateStart: new Date(data.dateStart),
       dateLastPay: new Date(data.dateLastPay),
       clientId: data.clientId.value,
+      creditCardId: data.creditCardId ?? null,
     }
 
     const { ok, message } = await createUpdateSubscription(subscriptionData);

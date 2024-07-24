@@ -7,12 +7,12 @@ import { PaymentMethod, Period } from '@prisma/client';
 import { z } from 'zod';
 
 const subscriptionSchema = z.object({
-    active: z.boolean(),
     amount: z.coerce.number().min(0).transform(val => Number(val)),
     clientId: z.string().uuid(),
     comment: z.string().optional(),
     dateStart: z.date(),
     dateLastPay: z.date().nullable(),
+    dateDeactivation: z.date().nullable(),
     delivery: z.string().optional(),
     id: z.string().optional(),
     paymentMethod: z.nativeEnum(PaymentMethod),
@@ -23,6 +23,7 @@ const subscriptionSchema = z.object({
 
 export const createUpdateSubscription = async (subscriptionData: Subscription) => {
 
+    
     const subscriptionParsed = subscriptionSchema.safeParse(subscriptionData);
 
     if (!subscriptionParsed.success) {
