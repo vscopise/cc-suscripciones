@@ -3,31 +3,80 @@
 @tailwind utilities;
 
 :root {
+  --primary: #274494;
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
 
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
       transparent,
+      rgb(var(--background-start-rgb))
+      )
       rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+} 
+
+@-webkit-keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.fade-in {
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+
+.btn-primary {
+  @apply bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded transition-all;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 hover:bg-gray-300 text-black py-2 px-4 rounded transition-all border border-gray-400;
+}
+
+.btn-disabled {
+  @apply bg-gray-600  text-white py-2 px-4 rounded transition-all;
+}
+
+.btn-loading {
+  @apply bg-gray-600  text-white py-2 px-4 rounded transition-all animate-pulse;
+}
+
+.form-control {
+  @apply w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md
+}
+.form-select {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAYAAAAMJL+VAAAABGdBTUEAALGPC/xhBQAAAQtJREFUOBG1lEEOgjAQRalbGj2OG9caOACn4ALGtfEuHACiazceR1PWOH/CNA3aMiTaBDpt/7zPdBKy7M/DCL9pGkvxxVp7KsvyJftL5rZt1865M+Ucq6pyyF3hNcI7Cuu+728QYn/JQA5yKaempxuZmQngOwEaYx55nu+1lQh8GIatMGi+01NwBcEmhxBqK4nAPZJ78K0KKFAJmR3oPp8+Iwgob0Oa6+TLoeCvRx+mTUYf/FVBGTPRwDkfLxnaSrRwcH0FWhNOmrkWYbE2XEicqgSa1J0LQ+aPCuQgZiLnwewbGuz5MGoAhcIkCQcjaTBjMgtXGURMVHC1wcQEy0J+Zlj8bKAnY1/UzDe2dbAVqfXn6wAAAABJRU5ErkJggg==');
+  background-size: 0.7rem;
+  background-position: right 0.7rem center;
+  @apply appearance-none pr-8 pl-2 bg-no-repeat;
+}
+
+.form-label {
+  @apply block text-base font-medium text-[#07074D];
+}
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
