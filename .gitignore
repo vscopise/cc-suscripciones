@@ -32,6 +32,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+#base de datos local
+/postgres/
+
 # vercel
 .vercel
 
