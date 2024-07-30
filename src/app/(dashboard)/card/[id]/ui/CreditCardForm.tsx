@@ -125,7 +125,7 @@ export const CreditCardForm = ({ card, clients }: Props) => {
             <div className="-mx-3 flex flex-wrap">
                 <div className="w-full px-3 sm:w-1/2">
                     <div className="pb-5">
-                        <label className="form-label">Vencimiento</label>
+                        <label className="form-label">Vencimiento mes</label>
                         <input className="form-control" type="month" {...register('expiration')} />
                     </div>
                 </div>
