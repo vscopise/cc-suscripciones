@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 
 const cardSchema = z.object({
-    cvv: z.coerce.number().min(0).transform(val => Number(val)),
+    cvv: z.coerce.number().min(0).transform(val => Number(val)).optional(),
     clientId: z.string(),
     expiration: z.date(),
     id: z.string().optional(),

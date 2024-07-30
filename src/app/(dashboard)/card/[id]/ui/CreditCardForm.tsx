@@ -126,8 +126,7 @@ export const CreditCardForm = ({ card, clients }: Props) => {
                 <div className="w-full px-3 sm:w-1/2">
                     <div className="pb-5">
                         <label className="form-label">Vencimiento</label>
-                        <input className="form-control" type="date" {...register('expiration')} />
-
+                        <input className="form-control" type="month" {...register('expiration')} />
                     </div>
                 </div>
                 <div className="w-full px-3 sm:w-1/2">
@@ -139,7 +138,7 @@ export const CreditCardForm = ({ card, clients }: Props) => {
                                     "form-control", { "border-red-500": errors.cvv }
                                 )}
                                 type={showCvv ? "text" : "password"}
-                                {...register('cvv', { required: true, minLength: 3, maxLength: 4 })}
+                                {...register('cvv', { minLength: 3, maxLength: 4 })}
                             />
                             <span className="absolute right-1 p-3 cursor-pointer" onClick={() => setShowCvv(!showCvv)}>
                                 {!showCvv && <IoEyeOffOutline size={20} />}

@@ -116,7 +116,7 @@ model CreditCard {
   id         String   @id @default(uuid())
   number     BigInt   @unique
   expiration DateTime
-  cvv        Int
+  cvv        Int?
 
   client   Client @relation(fields: [clientId], references: [id])
   clientId String
