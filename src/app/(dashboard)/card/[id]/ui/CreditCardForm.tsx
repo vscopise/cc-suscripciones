@@ -19,7 +19,7 @@ interface FormInputs {
     number: bigint;
     expiration: string;
     clientId: { label: string; value: string; };
-    cvv: number;
+    cvv: number | null;
 }
 
 export const CreditCardForm = ({ card, clients }: Props) => {
@@ -49,8 +49,7 @@ export const CreditCardForm = ({ card, clients }: Props) => {
 
 
     const { control, register, handleSubmit, formState: { errors } } = useForm<FormInputs>({
-        defaultValues: /* clientId === null ? {} : */ {
-        //defaultValues: Object.keys(card).length === 0 ? {} : {
+        defaultValues: {
             ...card,
             expiration: card.expiration?.toISOString().split('T')[0],
             clientId: {

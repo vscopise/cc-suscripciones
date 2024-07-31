@@ -2,6 +2,6 @@ export interface CreditCard {
     id: string;
     number: bigint;
     expiration: Date;
-    cvv: number;
+    cvv: number | null;
     clientId: string;
 }
