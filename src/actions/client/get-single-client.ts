@@ -10,7 +10,10 @@ export const getSingleClient = async (id: string) => {
 
     try {
         const client = await prisma.client.findFirst({
-            where: { id }
+            where: { id },
+            include: {
+                ClientNote: true
+            }
         });
 
         if (!client) return null;

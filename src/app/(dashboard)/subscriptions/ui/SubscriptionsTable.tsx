@@ -1,13 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { changeSubscriptionStatus, deleteSubscription } from '@/actions';
 import { PaymentStatus } from './PaymentStatus';
 import Link from 'next/link';
-import { IoAlertCircle, IoCheckboxOutline, IoCheckmarkCircleOutline, IoTrashOutline } from 'react-icons/io5';
-import { Subscription } from '@/interfaces';
-import { Button, ConfirmDialog } from '@/components';
-import { SubscriptionsTableItem } from './SubscriptionsTableItem';
+import { SubscriptionDelete } from './SubscriptionDelete';
+import { SubscriptionStatus } from './SubscriptionStatus';
 
 interface Props {
   active: string;
@@ -20,16 +16,6 @@ interface Props {
 }
 
 export const SubscriptionsTable = ({ active, /*status,*/ subscriptions, client, page, take, isAdmin }: Props) => {
-
-  const [confirmOpen, setConfirmOpen] = useState(false);
-
-  const handleDelete = (id: string) => {
-    deleteSubscription(id);
-  }
-
-  const handleChangeStatus = (id: string, value: boolean) => {
-    changeSubscriptionStatus(id, value);
-  }
 
   return (
     <table className="min-w-full">
@@ -103,30 +89,12 @@ export const SubscriptionsTable = ({ active, /*status,*/ subscriptions, client, 
                   })}
                 </Link>
               </td>
-              <td
-                className="text-sm text-gray-900 font-light px-6 py-4 flex justify-center cursor-pointer"
-              >
-                <SubscriptionsTableItem subscription={subscription} />
-              </td>
+              <SubscriptionStatus subscription={subscription} />
               <td className="text-sm text-gray-900 font-light px-6 py-4">
                 <PaymentStatus dateLastPay={subscription.dateLastPay} period={subscription.period} />
               </td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 flex justify-center">
-                {isAdmin &&
-                  <>
-                    <Button onClick={() => setConfirmOpen(true)}>
-                      <IoTrashOutline onClick={() => setConfirmOpen(true)} />
-                    </Button>
-                    <ConfirmDialog
-                      title="Eliminar suscripción"
-                      open={confirmOpen}
-                      onClose={() => setConfirmOpen(false)}
-                      onConfirm={() => handleDelete(subscription.id)}
-                    >
-                      ¿Está seguro que quiere eliminar esta Suscripción?
-                    </ConfirmDialog>
-                  </>
-                }
+                {isAdmin && <SubscriptionDelete id={subscription.id} />}
               </td>
             </tr>
           )

@@ -71,7 +71,7 @@ model Client {
   address            String             @default("")
   city               String             @default("")
   state              String             @default("")
-  observations       String             @default("")
+  //observations       String             @default("")
 
   Subscription Subscription[]
 
@@ -82,6 +82,8 @@ model Client {
   userId String
 
   CreditCard CreditCard[]
+  
+  ClientNote ClientNote[]
 }
 
 model Country {
@@ -122,4 +124,13 @@ model CreditCard {
   clientId String
 
   Subscription Subscription[]
+}
+
+model ClientNote {
+  id   String   @id @default(uuid())
+  date DateTime
+  note String   @default("")
+
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String
 }

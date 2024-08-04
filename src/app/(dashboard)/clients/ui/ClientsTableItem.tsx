@@ -1,31 +1,32 @@
-import { useState } from 'react';
-import { deleteCard } from '@/actions';
+import { useState } from 'react'
+import { deleteClient } from '@/actions';
 import { Button, ConfirmDialog } from '@/components';
 import { IoTrashOutline } from 'react-icons/io5';
 
 interface Props {
-    creditCardId: string;
+    clientId: string;
 }
-export const CreditCardsTableItem = ({ creditCardId }: Props) => {
+
+export const ClientsTableItem = ({ clientId }: Props) => {
 
     const [confirmOpen, setConfirmOpen] = useState(false);
 
     const handleDelete = (id: string) => {
-        deleteCard(id);
+        deleteClient(id);
     }
-
+    
     return (
         <>
             <Button onClick={() => setConfirmOpen(true)} className='mx-2'>
                 <IoTrashOutline />
             </Button>
             <ConfirmDialog
-                title="Eliminar tarjeta de crédito"
+                title="Eliminar cliente"
                 open={confirmOpen}
                 onClose={() => setConfirmOpen(false)}
-                onConfirm={() => handleDelete(creditCardId)}
+                onConfirm={() => handleDelete(clientId)}
             >
-                ¿Está seguro que quiere eliminar esta Tarjeta?
+                ¿Está seguro que quiere eliminar este cliente?
             </ConfirmDialog>
         </>
     )

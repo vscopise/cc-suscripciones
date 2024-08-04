@@ -13,7 +13,6 @@ export interface Client {
     state: string;
     countryId: string;
     userId: string;
-    observations: string;
 }
 
 export interface ClientCard {

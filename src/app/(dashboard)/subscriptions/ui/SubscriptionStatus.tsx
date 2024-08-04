@@ -1,13 +1,14 @@
 import { changeSubscriptionStatus } from '@/actions';
 import { ConfirmDialog } from '@/components';
 import { Subscription } from '@/interfaces';
+import clsx from 'clsx';
 import { useState } from 'react';
 import { IoAlertCircle, IoCheckmarkCircleOutline } from 'react-icons/io5';
 
 interface Props {
     subscription: Subscription;
 }
-export const SubscriptionsTableItem = ({ subscription }: Props) => {
+export const SubscriptionStatus = ({ subscription }: Props) => {
 
     const [confirmDeactivate, setConfirmDeactivate] = useState(false);
 
@@ -16,13 +17,26 @@ export const SubscriptionsTableItem = ({ subscription }: Props) => {
     }
 
     return (
-        <>
+        <td className={clsx(
+            "text-sm text-gray-900 font-light px-6 grid place-items-center cursor-pointer",
+            { "py-4": subscription.active },
+        )}>
             {!subscription.active &&
                 <>
                     <IoAlertCircle
                         size={30} className="text-red-500"
                         onClick={() => handleChangeStatus(subscription.id, subscription.active)}
                     />
+                    <span
+                        className="text-xs py-1"
+                        onClick={() => handleChangeStatus(subscription.id, subscription.active)}
+                    >
+                        {subscription.dateDeactivation?.toLocaleDateString('es-ES', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                        })}
+                    </span>
                 </>
             }
             {subscription.active &&
@@ -41,6 +55,6 @@ export const SubscriptionsTableItem = ({ subscription }: Props) => {
                     </ConfirmDialog>
                 </>
             }
-        </>
+        </td>
     )
 }

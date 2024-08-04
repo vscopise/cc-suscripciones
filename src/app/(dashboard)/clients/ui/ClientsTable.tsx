@@ -1,11 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Client, User } from '@/interfaces';
-import { deleteClient } from '@/actions';
+import {  User } from '@/interfaces';
 import Link from 'next/link';
-import { IoTrashOutline } from 'react-icons/io5';
-import { Button, ConfirmDialog } from '@/components';
+import { ClientsTableItem } from './ClientsTableItem';
 
 interface Props {
   clients: any[],
@@ -14,12 +11,6 @@ interface Props {
 }
 
 export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
-
-  const [confirmOpen, setConfirmOpen] = useState(false);
-
-  const handleDelete = (id: string) => {
-    deleteClient(id);
-  }
 
   return (
     <table className="min-w-full">
@@ -47,7 +38,7 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
             scope="col"
             className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
           >
-            Observaciones
+            Notas
           </th>
           <th
             scope="col"
@@ -87,9 +78,15 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
                 </Link>
               </td>
               <td className="text-sm  font-light whitespace-nowrap">
-                <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
-                  {client.observations.length > 25 ? `${client.observations.substring(0, 25)}...` : client.observations}
-                </Link>
+                {client.ClientNote.length > 0 && (
+                  <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
+                    {
+                      client.ClientNote!.at(-1)!.note.length > 25
+                        ? `${client.ClientNote!.at(-1)!.note.substring(0, 25)}...`
+                        : client.ClientNote!.at(-1)!.note
+                    }
+                  </Link>
+                )}
               </td>
               <td className="text-sm font-light px-6 py-4 flex justify-center">
                 <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
@@ -104,21 +101,7 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
                 )}
               </td>
               <td className="text-sm font-light px-6 py-4 flex justify-center">
-                {isAdmin &&
-                  <>
-                    <Button onClick={() => setConfirmOpen(true)} className='mx-2'>
-                      <IoTrashOutline />
-                    </Button>
-                    <ConfirmDialog
-                      title="Eliminar cliente"
-                      open={confirmOpen}
-                      onClose={() => setConfirmOpen(false)}
-                      onConfirm={() => handleDelete(client.id)}
-                    >
-                      ¿Está seguro que quiere eliminar este cliente?
-                    </ConfirmDialog>
-                  </>
-                }
+                {isAdmin && <ClientsTableItem clientId={client.id} />}
               </td>
             </tr>
           )

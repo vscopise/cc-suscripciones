@@ -32,3 +32,7 @@ export * from './card/delete-card';
 export * from './card/get-filtered-cards';
 export * from './card/get-single-card';
 export * from './card/get-all-cards';
+
+export * from './note/create-note';
+export * from './note/delete-note';
+export * from './note/get-filtered-notes';

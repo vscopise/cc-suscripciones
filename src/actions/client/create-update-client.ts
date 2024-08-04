@@ -19,7 +19,6 @@ const clientSchema = z.object({
     state: z.string().optional(),
     countryId: z.string(),
     userId: z.string(),
-    observations: z.string(),
 });
 
 export const createUpdateClient = async (clientData: Client) => {

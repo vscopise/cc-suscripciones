@@ -25,6 +25,7 @@ export const getFilteredClients = async ({ name, email, subscriptions, page = 1,
                 orderBy: { name: 'asc' },
                 include: {
                     Subscription: true,
+                    ClientNote: true,
                 },
                 where: {
                     ...(name !== '' ? { OR: [{ name: { contains: name } }, { lastName: { contains: name } },] } : {}),
@@ -48,6 +49,7 @@ export const getFilteredClients = async ({ name, email, subscriptions, page = 1,
                 orderBy: { name: 'asc' },
                 include: {
                     Subscription: true,
+                    ClientNote: true,
                 },
                 where: {
                     userId,

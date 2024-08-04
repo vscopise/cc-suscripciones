@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Client, ClientCard, Country, ClientCard as ClientWithCards, User, CreditCard } from '@/interfaces';
+import { Client, ClientCard, Country, ClientCard as ClientWithCards, ClientNote, User, CreditCard } from '@/interfaces';
 import clsx from 'clsx';
 import { useForm } from 'react-hook-form';
 import { useSession } from 'next-auth/react';
@@ -11,7 +11,7 @@ import { getCreditCardType } from '@/utils';
 
 interface Props {
     cards: CreditCard[];
-    client: Partial<Client> & { ClientCard?: ClientCard[] };
+    client: Partial<Client> & { ClientCard?: ClientCard[] } & { ClientNote?: ClientNote[] };
     countries: Country[];
     users: User[];
     currentUser: any;
@@ -30,7 +30,6 @@ interface FormInputs {
     state: string;
     countryId: string;
     userId: string;
-    observations: string;
 }
 
 export const ClientForm = ({ cards, client, countries, users, currentUser }: Props) => {
@@ -66,21 +65,6 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
 
         setClientId(clientId);
 
-        /* if (client) {
-            reset({
-                name: '',
-                lastName: '',
-                identification: 0,
-                phone: '',
-                email: '',
-                address: '',
-                city: '',
-                countryId: 'UY',
-                state: '',
-                observations: '',
-            });
-            setFocus('name');
-        } */
     }
 
     const resetMessage = () => {
@@ -96,125 +80,110 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
     return (
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)} onChange={resetMessage}>
             <div className="-mx-3 flex flex-wrap">
-                <div className="w-full px-3 sm:w-1/3">
-                    <div className="mb-5">
-                        <label className="form-label">Nombre</label>
-                        <input
-                            className={clsx(
-                                "form-control", { "border-red-500": errors.name }
-                            )}
-                            type="text"
-                            {...register('name', { required: true })}
-                        />
-                        {errors.name?.type === 'required' && (
-                            <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
+                <div className="w-full px-3 sm:w-1/3 mb-5">
+                    <label className="form-label">Nombre</label>
+                    <input
+                        className={clsx(
+                            "form-control", { "border-red-500": errors.name }
                         )}
-                    </div>
+                        type="text"
+                        {...register('name', { required: true })}
+                    />
+                    {errors.name?.type === 'required' && (
+                        <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
+                    )}
                 </div>
-                <div className="w-full px-3 sm:w-1/3">
-                    <div className="mb-5">
-                        <label className="form-label">Apellido</label>
-                        <input
-                            className={clsx(
-                                "form-control", { "border-red-500": errors.lastName }
-                            )}
-                            type="text"
-                            {...register('lastName', { required: true })}
-                        />
-                        {errors.lastName?.type === 'required' && (
-                            <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
+                <div className="w-full px-3 sm:w-1/3 mb-5">
+                    <label className="form-label">Apellido</label>
+                    <input
+                        className={clsx(
+                            "form-control", { "border-red-500": errors.lastName }
                         )}
-                    </div>
+                        type="text"
+                        {...register('lastName', { required: true })}
+                    />
+                    {errors.lastName?.type === 'required' && (
+                        <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
+                    )}
                 </div>
-                <div className="w-full px-3 sm:w-1/3">
-                    <div className="mb-5">
-                        <label className="form-label">Documento de Identidad</label>
-                        <div className="-mx-1 flex flex-wrap">
-                            <div className="w-1/3 px-1">
-                                <select
-                                    className="form-control form-select"
-                                    {...register('identificationType')}
-                                >
-                                    <option value="Cedula">Cédula</option>
-                                    <option value="Pasaporte">Pasaporte</option>
-                                </select>
-                            </div>
-                            <div className="w-2/3 px-1">
-                                <input
-                                    className="form-control"
-                                    type="number"
-                                    {...register('identification', { required: true, min: 0 })}
-                                />
-                                {errors.identification?.type === 'required' && (
-                                    <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
-                                )}
-                            </div>
+                <div className="w-full px-3 sm:w-1/3 mb-5">
+                    <label className="form-label">Documento de Identidad</label>
+                    <div className="-mx-1 flex flex-wrap">
+                        <div className="w-1/3 px-1">
+                            <select
+                                className="form-control form-select"
+                                {...register('identificationType')}
+                            >
+                                <option value="Cedula">Cédula</option>
+                                <option value="Pasaporte">Pasaporte</option>
+                            </select>
+                        </div>
+                        <div className="w-2/3 px-1">
+                            <input
+                                className="form-control"
+                                type="number"
+                                {...register('identification', { required: true, min: 0 })}
+                            />
+                            {errors.identification?.type === 'required' && (
+                                <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
 
             <div className="-mx-3 flex flex-wrap">
-                <div className="w-full px-3 sm:w-1/3">
-                    <div className="mb-5">
-                        <label className="form-label">Número de contacto</label>
-                        <input
-                            className="form-control"
-                            type="text"
-                            {...register('phone', { required: true })}
-                        />
-                        {errors.phone?.type === 'required' && (
-                            <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
-                        )}
-                    </div>
+                <div className="w-full px-3 sm:w-1/3 mb-5">
+                    <label className="form-label">Número de contacto</label>
+                    <input
+                        className="form-control"
+                        type="text"
+                        {...register('phone', { required: true })}
+                    />
+                    {errors.phone?.type === 'required' && (
+                        <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
+                    )}
                 </div>
-                <div className="w-full px-3 sm:w-1/3">
-                    <div className="mb-5">
-                        <label className="form-label">Correo Electrónico</label>
-                        <input
-                            className="form-control"
-                            type="email"
-                            {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
-                        />
-                        {errors.email?.type === 'required' && (
-                            <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
-                        )}
-                    </div>
+                <div className="w-full px-3 sm:w-1/3 mb-5">
+                    <label className="form-label">Correo Electrónico</label>
+                    <input
+                        className="form-control"
+                        type="email"
+                        {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
+                    />
+                    {errors.email?.type === 'required' && (
+                        <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
+                    )}
+
                 </div>
-                <div className="w-full px-3 sm:w-1/3">
-                    <div className="mb-5">
-                        <label className="form-label">Dirección</label>
-                        <input
-                            className="form-control"
-                            type="text"
-                            {...register('address')}
-                        />
-                    </div>
+                <div className="w-full px-3 sm:w-1/3 mb-5">
+                    <label className="form-label">Dirección</label>
+                    <input
+                        className="form-control"
+                        type="text"
+                        {...register('address')}
+                    />
                 </div>
             </div>
 
             <div className="-mx-3 flex flex-wrap">
-                <div className="w-full px-3 sm:w-1/4">
-                    <div className="mb-5">
-                        <label className="form-label">Ciudad</label>
-                        <input
-                            className="form-control"
-                            type="text"
-                            {...register('city')}
-                        />
-                    </div>
+                <div className="w-full px-3 sm:w-1/4 mb-5">
+                    <label className="form-label">Ciudad</label>
+                    <input
+                        className="form-control"
+                        type="text"
+                        {...register('city')}
+                    />
                 </div>
-                <div className="w-full px-3 sm:w-1/4">
-                    <div className="mb-5">
-                        <label className="form-label">Estado (Dpto.)</label>
-                        <input
-                            className="form-control"
-                            type="text"
-                            {...register('state')}
-                        />
-                    </div>
+                <div className="w-full px-3 sm:w-1/4 mb-5">
+                    <label className="form-label">Estado (Dpto.)</label>
+                    <input
+                        className="form-control"
+                        type="text"
+                        {...register('state')}
+                    />
                 </div>
-                <div className="w-full px-3 sm:w-1/4">
+                <div className="w-full px-3 sm:w-1/4 mb-5">
                     <label className="form-label">País</label>
                     <select
                         className="form-control form-select"
@@ -227,37 +196,35 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
                         ))}
                     </select>
                 </div>
-                <div className="w-full px-3 sm:w-1/4">
-                    <div className="mb-5">
-                        <label className="form-label">Usuario asignado</label>
-                        {isAdmin && (
-                            <select
-                                className="form-control form-select"
-                                {...register('userId')}
-                            >
-                                {users.map(user => (
-                                    <option key={user.id} value={user.id}>
-                                        {user.name}
-                                    </option>
-                                ))}
-                            </select>
-                        )}
-                        {!isAdmin && (
-                            <select
-                                className="form-control form-select"
-                                {...register('userId')}
-                            >
-                                <option value={currentUser.id}>
-                                    {currentUser.name}
+                <div className="w-full px-3 sm:w-1/4 mb-5">
+                    <label className="form-label">Usuario asignado</label>
+                    {isAdmin && (
+                        <select
+                            className="form-control form-select"
+                            {...register('userId')}
+                        >
+                            {users.map(user => (
+                                <option key={user.id} value={user.id}>
+                                    {user.name}
                                 </option>
-                            </select>
-                        )}
-                    </div>
+                            ))}
+                        </select>
+                    )}
+                    {!isAdmin && (
+                        <select
+                            className="form-control form-select"
+                            {...register('userId')}
+                        >
+                            <option value={currentUser.id}>
+                                {currentUser.name}
+                            </option>
+                        </select>
+                    )}
                 </div>
             </div>
 
             <div className="-mx-3 flex flex-wrap">
-                <div className="w-full px-3 sm:w-1/2">
+                <div className="w-full px-3 sm:w-1/2 mb-5">
                     {clientId && <>
                         <label className="form-label">Tarjetas</label>
                         <div className="flex justify-start space-x-6">
@@ -278,9 +245,26 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
                         </div>
                     </>}
                 </div>
-                <div className="w-full px-3 sm:w-1/2">
-                    <label className="form-label">Observaciones</label>
-                    <textarea className="form-control" {...register('observations')} rows={1} />
+                <div className="w-full px-3 sm:w-1/2 mb-5">
+                    <label className="form-label">Notas</label>
+                    <div className="flex justify-start space-x-6">
+                        {client.ClientNote!.length > 0 && (
+                            <span className="form-control">
+                                {
+                                    client.ClientNote!.at(-1)!.note.length > 33
+                                        ? `${client.ClientNote!.at(-1)!.note.substring(0, 33)}...`
+                                        : client.ClientNote!.at(-1)!.note
+                                }
+                            </span>
+
+                        )}
+                        <Link
+                            className='btn-secondary'
+                            href={`/client/${clientId}/notes`}
+                        >
+                            Editar
+                        </Link>
+                    </div>
                 </div>
             </div>
 
@@ -291,12 +275,11 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
                 <div>
                     <button className="btn-primary">{submitLabel}</button>
                 </div>
-                {clientId &&
+                {clientId && (
                     <Link href={`/subscription/new?clientId=${clientId}`} className="btn-primary">
                         Agregar suscripción
                     </Link>
-                }
-
+                )}
             </div>
         </form>
     )

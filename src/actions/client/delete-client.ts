@@ -14,6 +14,11 @@ export const deleteClient = async (id: string) => {
     }
 
     try {
+        // Borrar las notas del cliente
+        await prisma.clientNote.deleteMany({
+            where: { clientId: id }
+        })
+
         await prisma.client.delete({ where: { id } });
         revalidatePath('/clients');
         return {

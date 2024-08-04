@@ -1,11 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import type { User } from '@/interfaces';
-import { changeUserRole, deleteUser } from '@/actions';
+import { changeUserRole } from '@/actions';
 import Link from 'next/link';
-import { IoPencil, IoTrashOutline } from 'react-icons/io5';
-import { Button, ConfirmDialog } from '@/components';
+import { UserDelete } from './UserDelete';
 
 interface Props {
     users: User[];
@@ -13,12 +11,6 @@ interface Props {
 }
 
 export const UsersTable = ({ users, currentUser }: Props) => {
-
-    const [confirmOpen, setConfirmOpen] = useState(false);
-
-    const handleDeleteUser = (userId: string) => {
-        deleteUser(userId);
-    }
 
     return (
         <table className="min-w-full">
@@ -77,21 +69,7 @@ export const UsersTable = ({ users, currentUser }: Props) => {
                             }
                         </td>
                         <td className="text-sm text-gray-900 font-light whitespace-nowrap">
-                            {user.id !== currentUser && (
-                                <>
-                                    <Button onClick={() => setConfirmOpen(true)} className='mx-2'>
-                                        <IoTrashOutline />
-                                    </Button>
-                                    <ConfirmDialog
-                                        title="Eliminar usuario"
-                                        open={confirmOpen}
-                                        onClose={() => setConfirmOpen(false)}
-                                        onConfirm={() => handleDeleteUser(user.id)}
-                                    >
-                                        ¿Está seguro que quiere eliminar este usuario?
-                                    </ConfirmDialog>
-                                </>
-                            )}
+                            {user.id !== currentUser && <UserDelete userId={user.id} />}
                         </td>
                     </tr>
                 ))}
