@@ -9,7 +9,6 @@ import { z } from 'zod';
 const subscriptionSchema = z.object({
     amount: z.coerce.number().min(0).transform(val => Number(val)),
     clientId: z.string().uuid(),
-    comment: z.string().optional(),
     dateStart: z.date(),
     dateLastPay: z.date().nullable(),
     dateDeactivation: z.date().nullable(),
@@ -23,7 +22,6 @@ const subscriptionSchema = z.object({
 
 export const createUpdateSubscription = async (subscriptionData: Subscription) => {
 
-    
     const subscriptionParsed = subscriptionSchema.safeParse(subscriptionData);
 
     if (!subscriptionParsed.success) {
