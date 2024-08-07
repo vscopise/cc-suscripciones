@@ -87,11 +87,8 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
                             "form-control", { "border-red-500": errors.name }
                         )}
                         type="text"
-                        {...register('name', { required: true })}
+                        {...register('name')}
                     />
-                    {errors.name?.type === 'required' && (
-                        <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
-                    )}
                 </div>
                 <div className="w-full px-3 sm:w-1/3 mb-5">
                     <label className="form-label">Apellido</label>
@@ -100,11 +97,8 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
                             "form-control", { "border-red-500": errors.lastName }
                         )}
                         type="text"
-                        {...register('lastName', { required: true })}
+                        {...register('lastName')}
                     />
-                    {errors.lastName?.type === 'required' && (
-                        <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
-                    )}
                 </div>
                 <div className="w-full px-3 sm:w-1/3 mb-5">
                     <label className="form-label">Documento de Identidad</label>
@@ -122,11 +116,8 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
                             <input
                                 className="form-control"
                                 type="number"
-                                {...register('identification', { required: true, min: 0 })}
+                                {...register('identification', { min: 0 })}
                             />
-                            {errors.identification?.type === 'required' && (
-                                <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
-                            )}
                         </div>
                     </div>
                 </div>
@@ -138,11 +129,8 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
                     <input
                         className="form-control"
                         type="text"
-                        {...register('phone', { required: true })}
+                        {...register('phone')}
                     />
-                    {errors.phone?.type === 'required' && (
-                        <p className='mb5 text-red-500 text-sm'>Este campo es requerido</p>
-                    )}
                 </div>
                 <div className="w-full px-3 sm:w-1/3 mb-5">
                     <label className="form-label">Correo Electrónico</label>
@@ -245,27 +233,28 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
                         </div>
                     </>}
                 </div>
-                <div className="w-full px-3 sm:w-1/2 mb-5">
-                    <label className="form-label">Notas</label>
-                    <div className="flex justify-start space-x-6">
-                        {client.ClientNote!.length > 0 && (
-                            <span className="form-control">
-                                {
-                                    client.ClientNote!.at(-1)!.note.length > 33
-                                        ? `${client.ClientNote!.at(-1)!.note.substring(0, 33)}...`
-                                        : client.ClientNote!.at(-1)!.note
-                                }
-                            </span>
-
-                        )}
-                        <Link
-                            className='btn-secondary'
-                            href={`/client/${clientId}/notes`}
-                        >
-                            Editar
-                        </Link>
+                {clientId && (
+                    <div className="w-full px-3 sm:w-1/2 mb-5">
+                        <label className="form-label">Notas</label>
+                        <div className="flex justify-start space-x-6">
+                            {client.ClientNote && (
+                                <span className="form-control">
+                                    {
+                                        client.ClientNote!.at(-1)!.note.length > 33
+                                            ? `${client.ClientNote!.at(-1)!.note.substring(0, 33)}...`
+                                            : client.ClientNote!.at(-1)!.note
+                                    }
+                                </span>
+                            )}
+                            <Link
+                                className='btn-secondary'
+                                href={`/client/${clientId}/notes`}
+                            >
+                                Editar
+                            </Link>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
 
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}

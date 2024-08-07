@@ -12,8 +12,8 @@ export const PaymentStatus = ({ dateLastPay, period }: Props) => {
 
   return (
     <div className="flex justify-center gap-4">
-      {status}
-      {status != null &&
+      {status != 0 && status}
+      {status != 0 &&
         <span
           className={clsx(
             "relative flex h-3 w-3",
@@ -25,7 +25,7 @@ export const PaymentStatus = ({ dateLastPay, period }: Props) => {
               "animate-ping absolute inline-flex h-full w-full rounded-full opacity-75",
               { "bg-green-400": -1 <= status && status <= 28 },
               { "bg-yellow-400": 28 < status && status <= 31 },
-              { "bg-red-600": 31 < status  },
+              { "bg-red-600": 31 < status },
             )}
           />
           <span

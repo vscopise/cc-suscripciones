@@ -5,22 +5,22 @@ interface Props {
 
 export const paymentStatus = ({ dateLastPay, period }: Props) => {
     const monthPerPeriod = {
-        Mensual: 1,
-        Trimestral: 3,
-        Semestral: 6,
-        Anual: 12,
+        Mensual: 30,
+        Trimestral: 90,
+        Semestral: 180,
+        Anual: 365,
     };
 
-    if (dateLastPay === null) return null;
+    if (dateLastPay === null) return 0;
 
-    //const diff = dateLastPay.getDate() - new Date().getDate() + 1;
 
-    const diff = Math.round(new Date().getTime() - dateLastPay.getTime()) / (1000 * 60 * 60 * 24);
+    // Diferencia en milisegundos
+    const diff_mill = new Date().getTime() - dateLastPay.getTime();
 
-    const paymentMonth = diff % monthPerPeriod[period];
+    //Diferencia en días
+    const diff_day = (diff_mill) / (1000 * 60 * 60 * 24);
 
-    //const status = ((paymentMonth !== 0) || diff > 31) ? 0 : diff
-    const status = Math.ceil(diff);
+    const status = Math.floor(diff_day) - monthPerPeriod[period] - 1;
 
-    return status;
+    return status < 0 ? 0 : status;
 }
