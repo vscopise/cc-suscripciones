@@ -9,8 +9,8 @@ import { useDebouncedCallback } from 'use-debounce';
 
 interface Props {
   active: string;
-  //status: string;
   client: string;
+  status: string;
   page: number;
   take: number;
   isAdmin: boolean;
@@ -18,7 +18,7 @@ interface Props {
 }
 
 
-export const SubscriptionsFilter = ({ active, client, page, take }: Props) => {
+export const SubscriptionsFilter = ({ active, client, status, page, take }: Props) => {
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -43,7 +43,7 @@ export const SubscriptionsFilter = ({ active, client, page, take }: Props) => {
   const isFilterOpen = useUIStore(state => state.isSubscriptionFilterOpen);
 
   const downloadCSV = async () => {
-    const { allSubscriptions = [] } = await getFilteredSubscriptions({ active, client, page, take });
+    const { allSubscriptions = [] } = await getFilteredSubscriptions({ active, client, status, page, take });
 
     const csvContent = "data:text/csv;charset=utf-8," +
       "Nombre, Email, Monto\n" +
@@ -119,7 +119,14 @@ export const SubscriptionsFilter = ({ active, client, page, take }: Props) => {
           </div>
           <div className=" px-3 w-1/3">
             <div className="mb-5">
-
+              <div className="mb-5">
+                <select className="form-control form-select" onChange={(e) => handleFilter(e.target.value, 'status')}>
+                  <option value="all">Estado ?</option>
+                  <option value="1">En fecha</option>
+                  <option value="2">Atrasado</option>
+                  <option value="3">Muy atrasado</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>

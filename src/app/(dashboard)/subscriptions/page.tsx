@@ -10,6 +10,7 @@ interface Props {
     searchParams: {
         active?: string;
         client?: string;
+        status?: string;
         page?: string;
         take?: string;
     }
@@ -19,6 +20,7 @@ export default async function SubscriptionsPage({ searchParams }: Props) {
 
     const active = searchParams?.active || 'all';
     const client = searchParams?.client || '';
+    const status = searchParams?.status || 'all';
     const page = searchParams.page ? parseInt(searchParams.page) : 1;
     const take = searchParams.take ? parseInt(searchParams.take) : 10;
 
@@ -28,6 +30,7 @@ export default async function SubscriptionsPage({ searchParams }: Props) {
 
     const { ok, totalPages = 1, subscriptions = [] } = await getFilteredSubscriptions({ 
         active, 
+        status,
         /*status, subscriber,*/ 
         client, 
         page, 
@@ -51,6 +54,7 @@ export default async function SubscriptionsPage({ searchParams }: Props) {
                     active={active}
                     page={page}
                     take={take}
+                    status={status}
                     client={client}
                     subscriptions={subscriptions} 
                     isAdmin={isAdmin}
