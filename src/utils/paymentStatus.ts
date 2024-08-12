@@ -20,7 +20,7 @@ export const paymentStatus = ({ dateLastPay, period }: Props) => {
     //Diferencia en días
     const diff_day = (diff_mill) / (1000 * 60 * 60 * 24);
 
-    const status = Math.floor(diff_day) - monthPerPeriod[period] - 1;
+    //const status = Math.floor(diff_day) - monthPerPeriod[period] - 1;
 
-    return status < 0 ? 0 : status;
+    return Math.floor(diff_day) - monthPerPeriod[period] - 1;
 }

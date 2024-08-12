@@ -122,9 +122,9 @@ export const SubscriptionsFilter = ({ active, client, status, page, take }: Prop
               <div className="mb-5">
                 <select className="form-control form-select" onChange={(e) => handleFilter(e.target.value, 'status')}>
                   <option value="all">Estado ?</option>
-                  <option value="1">En fecha</option>
-                  <option value="2">Atrasado</option>
-                  <option value="3">Muy atrasado</option>
+                  <option value="1" className="text-green-500">Verde</option>
+                  <option value="2" className="text-yellow-400">Amarillo</option>
+                  <option value="3" className="text-red-500">Rojo</option>
                 </select>
               </div>
             </div>

@@ -12,7 +12,7 @@ export const PaymentStatus = ({ dateLastPay, period }: Props) => {
 
   return (
     <div className="flex justify-center gap-4">
-      {status != 0 && status}
+      {status}
       {status != 0 &&
         <span
           className={clsx(

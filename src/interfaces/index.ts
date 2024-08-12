@@ -5,3 +5,4 @@ export * from './note.interface';
 export * from './plan.interface';
 export * from './subscription.interface';
 export * from './user.interface';
+export * from './mp-payment';
