@@ -11,7 +11,7 @@ const notificationSchema = z.object({
         id: z.string(),
     }),
     date_created: z.string(),
-    id: z.number(),
+    id: z.string(),
     live_mode: z.boolean(),
     type: z.string(),
     user_id: z.number(),
