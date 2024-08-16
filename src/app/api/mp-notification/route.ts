@@ -8,7 +8,7 @@ const notificationSchema = z.object({
     action: z.string(),
     api_version: z.string(),
     data: z.object({
-        id: z.string(),
+        id: z.number(),
     }),
     date_created: z.string(),
     id: z.string(),
