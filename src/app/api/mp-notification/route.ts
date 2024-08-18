@@ -25,8 +25,16 @@ const administrativeEmail = process.env.ADMINISTRATIVE_MAIL ?? '';
 
 export async function POST(req: Request) {
 
+    
     try {
         const { data, type } = notificationSchema.parse(await req.json());
+        sendMail({
+            from: 'Suscripciones Caras y Caretas',
+            to: 'vscopise@gmail.com',
+            subject: 'Error en el cobro',
+            text: `Notificacion recibida - id: ${data.id}`,
+            
+        });
 
         //Si la notificación no tiene un tipo válido volver
         if (!['payment', 'subscription_authorized_payment']
