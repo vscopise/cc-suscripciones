@@ -28,12 +28,11 @@ export async function POST(req: Request) {
     
     try {
         const { data, type } = notificationSchema.parse(await req.json());
-        sendMail({
+        await sendMail({
             from: 'Suscripciones Caras y Caretas',
             to: 'vscopise@gmail.com',
             subject: 'Error en el cobro',
             text: `Notificacion recibida - id: ${data.id}`,
-            
         });
 
         //Si la notificación no tiene un tipo válido volver
@@ -160,7 +159,7 @@ export async function POST(req: Request) {
                 break;
             case 'refunded':
                 // Mandar correo con el aviso de rechazo
-                sendMail({
+                await sendMail({
                     from: 'Suscripciones Caras y Caretas',
                     to: administrativeEmail,
                     subject: 'Error en el cobro',
