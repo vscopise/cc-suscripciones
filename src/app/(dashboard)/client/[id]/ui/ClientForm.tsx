@@ -237,11 +237,11 @@ export const ClientForm = ({ cards, client, countries, users, currentUser }: Pro
                     <div className="w-full px-3 sm:w-1/2 mb-5">
                         <label className="form-label">Notas</label>
                         <div className="flex justify-end space-x-6">
-                            {client.ClientNote!.length > 0 && (
+                            {client.ClientNote && client.ClientNote.length > 0 && (
                                 <span className="form-control">
                                     {
-                                        client.ClientNote!.at(-1)!.note.length > 33
-                                            ? `${client.ClientNote!.at(-1)!.note.substring(0, 33)}...`
+                                        client.ClientNote.at(-1)!.note.length > 33
+                                            ? `${client.ClientNote.at(-1)!.note.substring(0, 33)}...`
                                             : client.ClientNote!.at(-1)!.note
                                     }
                                 </span>

@@ -31,13 +31,13 @@ export async function POST(req: Request) {
         await sendMail({
             from: 'Suscripciones Caras y Caretas',
             to: 'vscopise@gmail.com',
-            subject: 'Error en el cobro',
+            subject: 'Notificación de MP',
             text: `Notificacion recibida - id: ${data.id}`,
         });
 
         //Si la notificación no tiene un tipo válido volver
-        if (!['payment', 'subscription_authorized_payment']
-            .includes(type)) return NextResponse.json({ sucess: true });
+        if (!['payment', 'subscription_authorized_payment'].includes(type)) 
+            return NextResponse.json({ sucess: true });
 
         const { id } = data;
 
@@ -158,7 +158,7 @@ export async function POST(req: Request) {
             case 'pending':
                 break;
             case 'refunded':
-                // Mandar correo con el aviso de rechazo
+                // Pago devuelto, mandar correo con el aviso
                 await sendMail({
                     from: 'Suscripciones Caras y Caretas',
                     to: administrativeEmail,
@@ -175,7 +175,7 @@ export async function POST(req: Request) {
                 break;
                 break;
             case 'rejected':
-                // Mandar correo con el aviso de rechazo
+                // Pago rechazado, Mandar correo con el aviso
                 sendMail({
                     from: 'Suscripciones Caras y Caretas',
                     to: administrativeEmail,
@@ -190,15 +190,6 @@ export async function POST(req: Request) {
                 });
                 break;
         }
-        return NextResponse.json({ sucess: true });
-
-
-        
-
-
-        //console.log({ email });
-
-
         return NextResponse.json({ sucess: true });
 
     } catch (error) {

@@ -4,9 +4,10 @@ import { countries } from './seed-countries';
 
 async function main() {
     await prisma.subscription.deleteMany();
-    await prisma.user.deleteMany();
     await prisma.client.deleteMany();
     await prisma.country.deleteMany();
+    await prisma.plan.deleteMany();
+    await prisma.user.deleteMany();
 
     const { users } = initialData;
 

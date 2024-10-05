@@ -10,4 +10,6 @@
 6. Ejecutar seed ```npm run seed```
 7. Correr el proyecto ```npm run dev```
 
+8. Las tareas se programan con mergent.co
+
 # Correr en producción

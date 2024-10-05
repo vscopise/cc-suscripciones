@@ -46,6 +46,11 @@ export const SubscriptionsTable = ({ active, /*status,*/ subscriptions, client, 
             Fecha de inicio
           </th>
           <th
+            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+          >
+            Observaciones
+          </th>
+          <th
             scope="col"
             className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
           >
@@ -87,6 +92,16 @@ export const SubscriptionsTable = ({ active, /*status,*/ subscriptions, client, 
                     month: 'long',
                     day: 'numeric',
                   })}
+                </Link>
+              </td>
+              <td className="text-sm font-light whitespace-nowrap">
+                <Link href={`/subscription/${subscription.id}`} className='hover:underline px-6 py-4 block'>
+                  {
+                    subscription.comment &&
+                    subscription.comment.length > 25
+                      ? `${subscription.comment.substring(0, 25)}...`
+                      : subscription.comment
+                  }
                 </Link>
               </td>
               <SubscriptionStatus subscription={subscription} />
