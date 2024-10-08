@@ -22,7 +22,7 @@ export const LoginForm = () => {
       <input type="email" name="email" className="px-5 py-2 border bg-gray-300 rounded mb-5" />
 
       <label htmlFor="password">Contraseña</label>
-      <input type="password" name="password" className="px-5 py-2 border bg-gray-300 rounded mb-5" />
+      <input type="password" name="password" autoComplete="on" className="px-5 py-2 border bg-gray-300 rounded mb-5" />
 
       <div className="flex h-8 items-end space-x-1" aria-live="polite" aria-atomic="true">
         {
