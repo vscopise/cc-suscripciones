@@ -41,6 +41,7 @@ const paymentMethods = [
   { label: 'Cobro Ya', value: 'CobroYa' },
   { label: 'Transferencia Bancaria', value: 'TransferenciaBancaria' },
   { label: 'Abitab Net', value: 'AbitabNet' },
+  { label: 'Efectivo', value: 'Efectivo' },
 ];
 
 export const SubscriptionForm = ({ plans, clients, subscription, cards }: Props) => {
