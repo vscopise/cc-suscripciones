@@ -1,6 +1,6 @@
 'use client';
 
-import {  User } from '@/interfaces';
+import { User } from '@/interfaces';
 import Link from 'next/link';
 import { ClientsTableItem } from './ClientsTableItem';
 
@@ -27,6 +27,12 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
             className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
           >
             Email
+          </th>
+          <th
+            scope="col"
+            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+          >
+            Num. Cliente
           </th>
           <th
             scope="col"
@@ -70,6 +76,11 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
               <td className="text-sm  font-light whitespace-nowrap">
                 <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
                   {client.email}
+                </Link>
+              </td>
+              <td className="text-sm  font-light whitespace-nowrap">
+                <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
+                  {client.clientNumber}
                 </Link>
               </td>
               <td className="text-sm  font-light whitespace-nowrap">

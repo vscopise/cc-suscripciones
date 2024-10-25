@@ -64,6 +64,7 @@ model Plan {
 
 model Client {
   id                 String             @id @default(uuid())
+  clientNumber       Int                @default(autoincrement())
   name               String             @default("")
   lastName           String             @default("")
   identification     Int                @default(0)

@@ -3,7 +3,18 @@
 import Link from 'next/link';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
-import { IoBookmarksOutline, IoCardOutline, IoCloseOutline, IoDocumentsOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPeopleSharp, IoPersonOutline } from 'react-icons/io5';
+import { 
+    IoBookmarksOutline, 
+    IoCardOutline, 
+    IoCloseOutline, 
+    IoDocumentsOutline, 
+    IoLogInOutline, 
+    IoLogOutOutline, 
+    IoPeopleOutline, 
+    IoPeopleSharp,
+    IoPushOutline, 
+    IoPersonOutline 
+} from 'react-icons/io5';
 import { useUIStore } from '@/store/ui';
 import { logout } from '@/actions';
 
@@ -110,7 +121,16 @@ export const Sidebar = () => {
                                 <span className="ml-3">Tarjetas</span>
                             </Link>
 
+                            <div className="w-full h-px bg-gray-200 my-4" />
 
+                            <Link
+                                href="/import"
+                                className="flex items-center p-1 hover:bg-gray-100 rounded transition-all"
+                                onClick={() => closeSideMenu()}
+                            >
+                                <IoPushOutline size={30} />
+                                <span className="ml-3">Importar datos</span>
+                            </Link>
                         </>
                     )}
 
