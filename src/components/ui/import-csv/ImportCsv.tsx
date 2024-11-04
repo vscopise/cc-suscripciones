@@ -41,10 +41,7 @@ export const ImportCsv = ({ description, item }: Props) => {
 
   const { CSVReader } = useCSVReader();
 
-  const [uploading, setUploading] = useState(false);
-
-
-
+  const [message, setMessage] = useState('');
 
   return (
     <div className="mx-auto grid max-w-4xl grid-cols-12 gap-4">
@@ -54,8 +51,7 @@ export const ImportCsv = ({ description, item }: Props) => {
       <div className="col-span-12 sm:col-span-10">
         <CSVReader
           onUploadAccepted={(results: any) => {
-            setUploading(true);
-
+            
             fetch("/api/upload/", {
               method: "POST",
               headers: {
@@ -66,12 +62,9 @@ export const ImportCsv = ({ description, item }: Props) => {
                 item: item
               }),
             })
-              .then(() => {
-                setUploading(false);
-                console.log("CSV uploaded!");
-              })
+              .then(res => res.json())
+              .then(message => setMessage(message))
               .catch((error) => {
-                setUploading(false);
                 console.warn(error);
               });
           }}
@@ -79,8 +72,8 @@ export const ImportCsv = ({ description, item }: Props) => {
           {({
             getRootProps,
             acceptedFile,
-            ProgressBar,
             getRemoveFileProps,
+            ProgressBar
           }: any) => (
             <>
               <div style={styles.csvReader}>
@@ -90,7 +83,7 @@ export const ImportCsv = ({ description, item }: Props) => {
                 <div style={styles.acceptedFile}>
                   {acceptedFile && acceptedFile.name}
                 </div>
-                <button {...getRemoveFileProps()} style={styles.remove}>
+                <button {...getRemoveFileProps()} style={styles.remove} onClick={() => setMessage('')}>
                   Quitar
                 </button>
                 <Link href="/planilla-clientes.csv" className="text-xs content-center" download>
@@ -101,8 +94,8 @@ export const ImportCsv = ({ description, item }: Props) => {
             </>
           )}
         </CSVReader>
+      <div className="w-full">{message}</div>
       </div>
-      
     </div>
   )
 }
