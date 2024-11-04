@@ -62,23 +62,26 @@ export async function POST(req: Request) {
         data.push({
             name: result.data[i]['Nombre'],
             lastName: result.data[i]['Apellido'],
-            identification:  parseInt(result.data[i]['Número Documento']),
+            identification: parseInt(result.data[i]['Número Documento']),
             identificationType: result.data[i]['Tipo Documento'],
             phone: result.data[i]['Número de Contacto'],
             email: result.data[i]['Correo Electrónico'],
             address: result.data[i]['Dirección'],
             city: result.data[i]['Ciudad'],
-            countryId:'UY',
+            countryId: 'UY',
             userId: userId
         })
         i++;
     }
 
-    await prisma.client.createMany({
-        data, 
+    const createdClients = await prisma.client.createMany({
+        data,
         skipDuplicates: true
     })
-    
+
+    if (createdClients.count != result.data.length) {
+        return NextResponse.json('No se pudieron agregar todos los registros', { status: 201 });
+    }
 
     return NextResponse.json('Archivo subido correctamente', { status: 200 });
     //return NextResponse.json({ title: { title } }, { status: 201 });
