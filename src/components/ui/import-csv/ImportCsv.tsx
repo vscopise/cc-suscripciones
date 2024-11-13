@@ -43,6 +43,8 @@ export const ImportCsv = ({ description, item }: Props) => {
 
   const [message, setMessage] = useState('');
 
+  const templateUrl =`/template-${item.toLowerCase()}s.csv`;
+
   return (
     <div className="mx-auto grid max-w-4xl grid-cols-12 gap-4">
       <div className="col-span-12 sm:col-span-2 py-2">
@@ -86,7 +88,7 @@ export const ImportCsv = ({ description, item }: Props) => {
                 <button {...getRemoveFileProps()} style={styles.remove} onClick={() => setMessage('')}>
                   Quitar
                 </button>
-                <Link href="/planilla-clientes.csv" className="text-xs content-center" download>
+                  <Link href={templateUrl} className="text-xs content-center" download>
                   Descargar plantilla
                 </Link>
               </div>
