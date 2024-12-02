@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
 export const deleteClient = async (id: string) => {
+    console.log(id)
     const session = await auth();
     if (session?.user.role !== 'admin') {
         return {
@@ -17,7 +18,12 @@ export const deleteClient = async (id: string) => {
         // Borrar las notas del cliente
         await prisma.clientNote.deleteMany({
             where: { clientId: id }
-        })
+        });
+
+        // Borrar las suscripciones asociadas al cliente
+        await prisma.subscription.deleteMany({
+            where: { clientId: id}
+        });
 
         await prisma.client.delete({ where: { id } });
         revalidatePath('/clients');

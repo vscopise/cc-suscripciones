@@ -7,6 +7,7 @@ export default function ImportPage() {
                 <div className="w-full sm:w-[950px] px-10">
                     <Title title="Importar Datos" />
                     <ImportCsv description="Clientes" item="Client" />
+                    <ImportCsv description="Tarjetas" item="Card" />
                     <ImportCsv description="Suscripciones" item="Subscription" />
                 </div>
             </div>
