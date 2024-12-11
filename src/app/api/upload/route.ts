@@ -49,8 +49,8 @@ export async function POST(req: Request) {
         Card: z.array(z.object({
             'Correo Electrónico': z.string().email(),
             'Número': z.string(),
-            'Vencimiento': z.string().regex(new RegExp(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0,1,2])\/(19|20)\d{2}$/)),
-            'CVV': z.string().regex(new RegExp(/^\d{3,4}$/)),
+            'Vencimiento': z.string().regex(new RegExp(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0,1,2])\/(19|20)\d{2}$/)).optional(),
+            'CVV': z.string().regex(new RegExp(/^\d{3,4}$/)).optional(),
         })),
         Subscription: z.array(z.object({
             'email cliente': z.string().email(),
@@ -198,14 +198,14 @@ export async function POST(req: Request) {
         while (i < result.data.length) {
             var row = result.data[i];
             var data: any = []
-            
+
             try {
                 var client = await prisma.client.findUnique({
                     where: {
                         email: row['Correo Electrónico']
                     }
                 });
-    
+
                 if (!client) return NextResponse.json('Cliente no registrado', { status: 201 });
 
                 var expiration = row['Vencimiento'].replace(/(\d+[/])(\d+[/])/, '$2$1');
@@ -215,14 +215,14 @@ export async function POST(req: Request) {
                         number: parseInt(row['Número']),
                     },
                     create: {
-                        number:  parseInt(row['Número']),
+                        number: parseInt(row['Número']),
                         expiration: new Date(expiration),
                         cvv: parseInt(row['CVV']),
                         clientId: client.id
                     },
                     update: {
-                        expiration: new Date(expiration),
-                        cvv: parseInt(row['CVV']),
+                        expiration: '' === expiration ? new Date('01/01/1900') : new Date(expiration),
+                        cvv: '' === row['CVV'] ? 999 : parseInt(row['CVV']),
                         clientId: client.id
                     },
                 })
