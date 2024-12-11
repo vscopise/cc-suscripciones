@@ -218,8 +218,8 @@ export async function POST(req: Request) {
                     },
                     create: {
                         number: parseInt(row['Número']),
-                        expiration: new Date(expiration),
-                        cvv: parseInt(row['CVV']),
+                        expiration: '' === expiration ? new Date('01/01/1900') : new Date(expiration),
+                        cvv: '' === row['CVV'] ? 999 : parseInt(row['CVV']),
                         clientId: client.id
                     },
                     update: {
