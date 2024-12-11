@@ -49,8 +49,10 @@ export async function POST(req: Request) {
         Card: z.array(z.object({
             'Correo Electrónico': z.string().email(),
             'Número': z.string(),
-            'Vencimiento': z.string().regex(new RegExp(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0,1,2])\/(19|20)\d{2}$/)).nullish(),
-            'CVV': z.string().regex(new RegExp(/^\d{3,4}$/)).nullish(),
+            //'Vencimiento': z.string().regex(new RegExp(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0,1,2])\/(19|20)\d{2}$/)).nullish(),
+            'Vencimiento': z.string().optional(),
+            //'CVV': z.string().regex(new RegExp(/^\d{3,4}$/)).nullish(),
+            'CVV': z.string().optional(),
         })),
         Subscription: z.array(z.object({
             'email cliente': z.string().email(),
