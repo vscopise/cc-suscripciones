@@ -1,16 +1,30 @@
-'use client';
+"use client";
 
-import { User } from '@/interfaces';
-import Link from 'next/link';
-import { ClientsTableItem } from './ClientsTableItem';
+import { User } from "@/interfaces";
+import Link from "next/link";
+import { ClientsTableItem } from "./ClientsTableItem";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from 'use-debounce';
 
 interface Props {
-  clients: any[],
-  users: User[],
-  isAdmin: boolean,
+  clients: any[];
+  users: User[];
+  isAdmin: boolean;
 }
 
 export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const currentOrder = searchParams.get("order") || "asc"; // valor por defecto "asc"
+  const { replace } = useRouter();
+
+  const handleClick = useDebouncedCallback((field: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("orderby", field);
+    const nextOrder = currentOrder === "asc" ? "desc" : "asc";
+    params.set("order", nextOrder);
+    replace(`${pathname}?${params.toString()}`);
+  }, 300);
 
   return (
     <table className="min-w-full">
@@ -18,13 +32,15 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
         <tr>
           <th
             scope="col"
-            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+            className="text-sm font-medium text-gray-900 px-6 py-4 text-left cursor-pointer"
+            onClick={(e) => handleClick("name")}
           >
             Nombre
           </th>
           <th
             scope="col"
-            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+            className="text-sm font-medium text-gray-900 px-6 py-4 text-left cursor-pointer"
+            onClick={(e) => handleClick("email")}
           >
             Email
           </th>
@@ -62,52 +78,71 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {clients.map(client => {
+        {clients.map((client) => {
           return (
             <tr
               key={client.id}
               className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
             >
               <td className="text-sm  font-light whitespace-nowrap">
-                <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
+                <Link
+                  href={`/client/${client.id}`}
+                  className="hover:underline px-6 py-4 block"
+                >
                   {`${client.name} ${client.lastName}`}
                 </Link>
               </td>
               <td className="text-sm  font-light whitespace-nowrap">
-                <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
+                <Link
+                  href={`/client/${client.id}`}
+                  className="hover:underline px-6 py-4 block"
+                >
                   {client.email}
                 </Link>
               </td>
               <td className="text-sm  font-light whitespace-nowrap">
-                <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
+                <Link
+                  href={`/client/${client.id}`}
+                  className="hover:underline px-6 py-4 block"
+                >
                   {client.clientNumber}
                 </Link>
               </td>
               <td className="text-sm  font-light whitespace-nowrap">
-                <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
+                <Link
+                  href={`/client/${client.id}`}
+                  className="hover:underline px-6 py-4 block"
+                >
                   {client.phone}
                 </Link>
               </td>
               <td className="text-sm  font-light whitespace-nowrap">
                 {client.ClientNote.length > 0 && (
-                  <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
-                    {
-                      client.ClientNote!.at(-1)!.note.length > 25
-                        ? `${client.ClientNote!.at(-1)!.note.substring(0, 25)}...`
-                        : client.ClientNote!.at(-1)!.note
-                    }
+                  <Link
+                    href={`/client/${client.id}`}
+                    className="hover:underline px-6 py-4 block"
+                  >
+                    {client.ClientNote!.at(-1)!.note.length > 25
+                      ? `${client.ClientNote!.at(-1)!.note.substring(0, 25)}...`
+                      : client.ClientNote!.at(-1)!.note}
                   </Link>
                 )}
               </td>
               <td className="text-sm font-light px-6 py-4 flex justify-center">
-                <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
+                <Link
+                  href={`/client/${client.id}`}
+                  className="hover:underline px-6 py-4 block"
+                >
                   {client.Subscription.length > 0 && <span>SI</span>}
                 </Link>
               </td>
               <td className="text-sm  font-light whitespace-nowrap">
                 {isAdmin && (
-                  <Link href={`/client/${client.id}`} className='hover:underline px-6 py-4 block'>
-                    {users.filter(u => u.id === client.userId)[0].name}
+                  <Link
+                    href={`/client/${client.id}`}
+                    className="hover:underline px-6 py-4 block"
+                  >
+                    {users.filter((u) => u.id === client.userId)[0].name}
                   </Link>
                 )}
               </td>
@@ -115,9 +150,9 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
                 {isAdmin && <ClientsTableItem clientId={client.id} />}
               </td>
             </tr>
-          )
+          );
         })}
       </tbody>
     </table>
-  )
-}
+  );
+};

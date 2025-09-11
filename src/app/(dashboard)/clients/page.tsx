@@ -13,6 +13,8 @@ interface Props {
         subscriptions?: string;
         page?: string;
         take?: string;
+        orderby?: string;
+        order?: string;
     }
 }
 
@@ -22,6 +24,9 @@ export default async function ClientsPage({ searchParams }: Props) {
     const subscriptions = searchParams?.subscriptions || 'all';
     const page = searchParams.page ? parseInt(searchParams.page) : 1;
     const take = searchParams.take ? parseInt(searchParams.take) : 10;
+
+    const orderby = searchParams?.orderby || 'name';
+    const order = searchParams.order=== 'asc' ? 'asc' : 'desc';
 
     const session = await auth();
     const isAdmin = session?.user.role === 'admin';
@@ -34,6 +39,8 @@ export default async function ClientsPage({ searchParams }: Props) {
             subscriptions, 
             page, 
             take, 
+            orderby,
+            order,
             isAdmin, 
             userId }), 
         getAllUsers(),
