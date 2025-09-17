@@ -4,7 +4,7 @@ import { User } from "@/interfaces";
 import Link from "next/link";
 import { ClientsTableItem } from "./ClientsTableItem";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useDebouncedCallback } from 'use-debounce';
+import { useDebouncedCallback } from "use-debounce";
 
 interface Props {
   clients: any[];
@@ -27,58 +27,60 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
   }, 300);
 
   return (
-    <table className="min-w-full">
-      <thead className="bg-gray-200 border-b">
+    <table className="table-fixed w-full">
+      <thead className="bg-gray-200 text-gray-900 border-b text-xs">
         <tr>
           <th
             scope="col"
-            className="text-sm font-medium text-gray-900 px-6 py-4 text-left cursor-pointer"
+            className="w-1/6 px-4 py-4 text-left cursor-pointer"
             onClick={(e) => handleClick("name")}
           >
             Nombre
           </th>
           <th
             scope="col"
-            className="text-sm font-medium text-gray-900 px-6 py-4 text-left cursor-pointer"
+            className="w-1/6 px-4 py-4 text-left cursor-pointer"
             onClick={(e) => handleClick("email")}
           >
             Email
           </th>
-          <th
-            scope="col"
-            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-          >
+          <th scope="col" className="w-1/12 px-4 py-4 text-left">
             Num. Cliente
           </th>
-          <th
-            scope="col"
-            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-          >
+          <th scope="col" className="w-1/12 px-4 py-4 text-left">
             Contacto
           </th>
-          <th
-            scope="col"
-            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-          >
+          <th scope="col" className="w-1/6 px-4 py-4 text-left">
             Notas
           </th>
-          <th
-            scope="col"
-            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-          >
+          <th scope="col" className="w-1/12 px-4 py-4 text-left">
             Con suscripciones
           </th>
-          <th
-            scope="col"
-            className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
-          >
+          <th scope="col" className="w-1/12 px-4 py-4 text-left">
+            Baja reciente
+          </th>
+
+          <th scope="col" className="w-1/12 px-4 py-4 text-left">
             {isAdmin && <span>Usuario Asignado</span>}
           </th>
-          <th />
+          <th className="w-1/12" />
         </tr>
       </thead>
       <tbody>
         {clients.map((client) => {
+          let bajaReciente = false;
+          if (client.Subscription.length > 0) {
+            client.Subscription.map((s: any) => {
+              if (null !== s.dateDeactivation) {
+                const nowTimestamp = Date.now();
+                const targetTimestamp = s.dateDeactivation.getTime();
+                const differenceInMs = nowTimestamp - targetTimestamp;
+                if (differenceInMs < 1000 * 3600 * 24 * 30) {
+                  bajaReciente = true;
+                }
+              }
+            });
+          }
           return (
             <tr
               key={client.id}
@@ -87,7 +89,7 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
               <td className="text-sm  font-light whitespace-nowrap">
                 <Link
                   href={`/client/${client.id}`}
-                  className="hover:underline px-6 py-4 block"
+                  className="hover:underline px-4 py-4 block"
                 >
                   {`${client.name} ${client.lastName}`}
                 </Link>
@@ -95,7 +97,7 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
               <td className="text-sm  font-light whitespace-nowrap">
                 <Link
                   href={`/client/${client.id}`}
-                  className="hover:underline px-6 py-4 block"
+                  className="hover:underline px-4 py-4 block"
                 >
                   {client.email}
                 </Link>
@@ -103,7 +105,7 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
               <td className="text-sm  font-light whitespace-nowrap">
                 <Link
                   href={`/client/${client.id}`}
-                  className="hover:underline px-6 py-4 block"
+                  className="hover:underline px-4 py-4 block"
                 >
                   {client.clientNumber}
                 </Link>
@@ -111,7 +113,7 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
               <td className="text-sm  font-light whitespace-nowrap">
                 <Link
                   href={`/client/${client.id}`}
-                  className="hover:underline px-6 py-4 block"
+                  className="hover:underline px-4 py-4 block"
                 >
                   {client.phone}
                 </Link>
@@ -120,7 +122,7 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
                 {client.ClientNote.length > 0 && (
                   <Link
                     href={`/client/${client.id}`}
-                    className="hover:underline px-6 py-4 block"
+                    className="hover:underline px-4 py-4 block"
                   >
                     {client.ClientNote!.at(-1)!.note.length > 25
                       ? `${client.ClientNote!.at(-1)!.note.substring(0, 25)}...`
@@ -128,25 +130,26 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
                   </Link>
                 )}
               </td>
-              <td className="text-sm font-light px-6 py-4 flex justify-center">
+              <td className="text-sm font-light px-2 py-4 text-center">
                 <Link
                   href={`/client/${client.id}`}
-                  className="hover:underline px-6 py-4 block"
+                  className="hover:underline py-4 block"
                 >
-                  {client.Subscription.length > 0 && <span>SI</span>}
+                  {client.Subscription.length > 0 && <>SI</>}
                 </Link>
               </td>
+              <td className="text-sm font-light px-2 py-4 text-center">{bajaReciente && <>SI</>}</td>
               <td className="text-sm  font-light whitespace-nowrap">
                 {isAdmin && (
                   <Link
                     href={`/client/${client.id}`}
-                    className="hover:underline px-6 py-4 block"
+                    className="hover:underline px-4 py-4 block"
                   >
                     {users.filter((u) => u.id === client.userId)[0].name}
                   </Link>
                 )}
               </td>
-              <td className="text-sm font-light px-6 py-4 flex justify-center">
+              <td className="text-sm font-light px-2 py-4 flex justify-center">
                 {isAdmin && <ClientsTableItem clientId={client.id} />}
               </td>
             </tr>
