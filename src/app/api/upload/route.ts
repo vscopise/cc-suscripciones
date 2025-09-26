@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     const session = await auth();
 
-    const userId = session!.user.id;
+    var userId = session!.user.id;
 
     const body = await req.json();
 
@@ -45,6 +45,7 @@ export async function POST(req: Request) {
             'Ciudad': z.string().optional(),
             'Estado': z.string().optional(),
             'País': z.string().optional(),
+            'Usuario asignado': z.string().optional(),
         })),
         Card: z.array(z.object({
             'Correo Electrónico': z.string().email(),
@@ -79,6 +80,15 @@ export async function POST(req: Request) {
         while (i < result.data.length) {
             var row = result.data[i];
             var email = row['Correo Electrónico'];
+            if('' !== row['Usuario asignado']) {
+                var usuarioAsignado = await prisma.user.findFirst({
+                    where: {
+                        email: String(row['Usuario asignado'])
+                    }
+                });
+                if(usuarioAsignado) userId = usuarioAsignado.id;
+
+            }
             if ('' == email) {
                 try {
                     await prisma.client.upsert({
@@ -95,7 +105,8 @@ export async function POST(req: Request) {
                             address: String(row['Dirección']),
                             city: String(row['Ciudad']),
                             countryId: 'UY',
-                            userId: userId
+                            userId: userId,
+
                         },
                         update: {
                             name: String(row['Nombre']),
