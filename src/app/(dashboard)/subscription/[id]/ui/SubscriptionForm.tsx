@@ -26,8 +26,9 @@ interface FormInputs {
   dateStart: string;
   dateLastPay: string;
   delivery: string | null;
+  planId: string | null;
   // paymentMethod: 'MercadoPago' | 'FirstData' | 'Visa' | 'Stripe' | 'Multipago' | 'CobroYa' | 'TransferenciaBancaria' | 'AbitabNet' | 'Efectivo';
-  // period: 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual';
+  period: 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual';
   paymentMethod:  'AbitabNet' |
     'BrouDebito' |
     'CobroYa' |
@@ -37,7 +38,7 @@ interface FormInputs {
     'MercadoPago' |
     'Multipago' |
     'Passcard' |
-    'Paypal_WesternUnion' |
+    'PaypalWesternUnion' |
     'Stripe' |
     'TransferenciaBancaria' |
     'Visa'
@@ -55,7 +56,7 @@ const paymentMethods = [
   { label: 'Mercado Pago', value: 'MercadoPago' },
   { label: 'Multipago', value: 'Multipago' },
   { label: 'Passcard', value: 'Passcard' },
-  { label: 'Paypal / Western Union', value: 'Paypal_WesternUnion' },
+  { label: 'Paypal / Western Union', value: 'PaypalWesternUnion' },
   { label: 'Stripe', value: 'Stripe' },
   { label: 'Transferencia Bancaria', value: 'TransferenciaBancaria' },
   { label: 'Visa', value: 'Visa' },
@@ -111,6 +112,8 @@ export const SubscriptionForm = ({ plans, clients, subscription, cards }: Props)
       dateLastPay: new Date(data.dateLastPay),
       clientId: data.clientId.value,
       creditCardId: data.creditCardId ?? null,
+      planId: data.planId ?? '',
+      period: data.period ?? 'Anual'
     }
 
     const { ok, message } = await createUpdateSubscription(subscriptionData);

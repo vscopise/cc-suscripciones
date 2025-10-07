@@ -8,7 +8,20 @@ export interface Subscription {
     dateStart: Date;
     delivery: string | null;
     id: string;
-    paymentMethod: 'MercadoPago' | 'FirstData' | 'Visa' | 'Stripe' | 'Multipago' | 'CobroYa' | 'TransferenciaBancaria' | 'AbitabNet' | 'Efectivo',
+    // paymentMethod: 'MercadoPago' | 'FirstData' | 'Visa' | 'Stripe' | 'Multipago' | 'CobroYa' | 'TransferenciaBancaria' | 'AbitabNet' | 'Efectivo',
+    paymentMethod:  'AbitabNet' |
+    'BrouDebito' |
+    'CobroYa' |
+    'Efectivo' |
+    'FirstData' |
+    'Gentileza' |
+    'MercadoPago' |
+    'Multipago' |
+    'Passcard' |
+    'PaypalWesternUnion' |
+    'Stripe' |
+    'TransferenciaBancaria' |
+    'Visa';
     period: 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual';
     planId: string;
     creditCardId: string | null;

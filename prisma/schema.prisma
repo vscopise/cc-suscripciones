@@ -41,7 +41,7 @@ enum PaymentMethod {
   MercadoPago
   Multipago
   Passcard
-  Paypal_WesternUnion
+  PaypalWesternUnion
   Stripe
   TransferenciaBancaria
   Visa
