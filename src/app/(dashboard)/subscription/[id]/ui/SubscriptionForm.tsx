@@ -28,7 +28,7 @@ interface FormInputs {
   delivery: string | null;
   // paymentMethod: 'MercadoPago' | 'FirstData' | 'Visa' | 'Stripe' | 'Multipago' | 'CobroYa' | 'TransferenciaBancaria' | 'AbitabNet' | 'Efectivo';
   // period: 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual';
-  PaymentMethod:  'AbitabNet' |
+  paymentMethod:  'AbitabNet' |
     'BrouDebito' |
     'CobroYa' |
     'Efectivo' |
