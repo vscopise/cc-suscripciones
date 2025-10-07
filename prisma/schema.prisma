@@ -32,15 +32,19 @@ enum Period {
 }
 
 enum PaymentMethod {
-  MercadoPago
-  FirstData
-  Visa
-  Stripe
-  Multipago
-  CobroYa
-  TransferenciaBancaria
   AbitabNet
+  BrouDebito
+  CobroYa
   Efectivo
+  FirstData
+  Gentileza
+  MercadoPago
+  Multipago
+  Passcard
+  Paypal_WesternUnion
+  Stripe
+  TransferenciaBancaria
+  Visa
 }
 
 model User {

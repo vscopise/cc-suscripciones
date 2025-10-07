@@ -8,6 +8,7 @@ import { createUpdateSubscription } from '@/actions';
 import { getCreditCardType } from '@/utils';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { PaymentMethod } from '@prisma/client';
 
 interface Props {
   plans: Plan[];
@@ -25,23 +26,38 @@ interface FormInputs {
   dateStart: string;
   dateLastPay: string;
   delivery: string | null;
-  paymentMethod: 'MercadoPago' | 'FirstData' | 'Visa' | 'Stripe' | 'Multipago' | 'CobroYa' | 'TransferenciaBancaria' | 'AbitabNet' | 'Efectivo';
-  period: 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual';
-  planId: string;
-}
+  // paymentMethod: 'MercadoPago' | 'FirstData' | 'Visa' | 'Stripe' | 'Multipago' | 'CobroYa' | 'TransferenciaBancaria' | 'AbitabNet' | 'Efectivo';
+  // period: 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual';
+  PaymentMethod:  'AbitabNet' |
+    'BrouDebito' |
+    'CobroYa' |
+    'Efectivo' |
+    'FirstData' |
+    'Gentileza' |
+    'MercadoPago' |
+    'Multipago' |
+    'Passcard' |
+    'Paypal_WesternUnion' |
+    'Stripe' |
+    'TransferenciaBancaria' |
+    'Visa'
+  }
 
 const periods = ['Mensual', 'Trimestral', 'Semestral', 'Anual'];
 
 const paymentMethods = [
-  { label: 'Mercado Pago', value: 'MercadoPago' },
-  { label: 'First Data', value: 'FirstData' },
-  { label: 'Visa', value: 'Visa' },
-  { label: 'Stripe', value: 'Stripe' },
-  { label: 'Multipago', value: 'Multipago' },
-  { label: 'Cobro Ya', value: 'CobroYa' },
-  { label: 'Transferencia Bancaria', value: 'TransferenciaBancaria' },
   { label: 'Abitab Net', value: 'AbitabNet' },
+  { label: 'Cobro Ya', value: 'CobroYa' },
   { label: 'Efectivo', value: 'Efectivo' },
+  { label: 'First Data', value: 'FirstData' },
+  { label: 'Gentileza', value: 'Gentileza' },
+  { label: 'Mercado Pago', value: 'MercadoPago' },
+  { label: 'Multipago', value: 'Multipago' },
+  { label: 'Passcard', value: 'Passcard' },
+  { label: 'Paypal / Western Union', value: 'Paypal_WesternUnion' },
+  { label: 'Stripe', value: 'Stripe' },
+  { label: 'Transferencia Bancaria', value: 'TransferenciaBancaria' },
+  { label: 'Visa', value: 'Visa' },
 ];
 
 export const SubscriptionForm = ({ plans, clients, subscription, cards }: Props) => {
