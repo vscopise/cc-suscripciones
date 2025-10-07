@@ -47,6 +47,7 @@ const periods = ['Mensual', 'Trimestral', 'Semestral', 'Anual'];
 
 const paymentMethods = [
   { label: 'Abitab Net', value: 'AbitabNet' },
+  { label: 'Brou Débito', value: 'BrouDebito' },
   { label: 'Cobro Ya', value: 'CobroYa' },
   { label: 'Efectivo', value: 'Efectivo' },
   { label: 'First Data', value: 'FirstData' },
