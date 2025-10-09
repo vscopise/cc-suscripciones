@@ -111,40 +111,43 @@ export async function POST(req: Request) {
       }
       var identification =
         row["Tipo Documento"] == "" ? 0 : +row["Tipo Documento"];
-
-      if (id) {
-        //Actualizar
-        client = await prisma.client.update({
-          where: { id },
-          data: {
-            name: row["Nombre"],
-            lastName: row["Apellido"],
-            phone: row["Número de Contacto"],
-            email: row["Correo Electrónico"],
-            address: row["Dirección"],
-            city: row["Ciudad"],
-            state: row["Estado"],
-            identification,
-            countryId,
-            userId,
-          },
-        });
-      } else {
-        //Crear
-        client = await prisma.client.create({
-          data: {
-            name: row["Nombre"],
-            lastName: row["Apellido"],
-            phone: row["Número de Contacto"],
-            email: row["Correo Electrónico"],
-            address: row["Dirección"],
-            city: row["Ciudad"],
-            state: row["Estado"],
-            identification,
-            countryId,
-            userId,
-          },
-        });
+      try {
+        if (id) {
+          //Actualizar
+          client = await prisma.client.update({
+            where: { id },
+            data: {
+              name: row["Nombre"],
+              lastName: row["Apellido"],
+              phone: row["Número de Contacto"],
+              email: row["Correo Electrónico"],
+              address: row["Dirección"],
+              city: row["Ciudad"],
+              state: row["Estado"],
+              identification,
+              countryId,
+              userId,
+            },
+          });
+        } else {
+          //Crear
+          client = await prisma.client.create({
+            data: {
+              name: row["Nombre"],
+              lastName: row["Apellido"],
+              phone: row["Número de Contacto"],
+              email: row["Correo Electrónico"],
+              address: row["Dirección"],
+              city: row["Ciudad"],
+              state: row["Estado"],
+              identification,
+              countryId,
+              userId,
+            },
+          });
+        }
+      } catch (error) {
+        console.log(error);
       }
 
       /* if ('' == email) {
