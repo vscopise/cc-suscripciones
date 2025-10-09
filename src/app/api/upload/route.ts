@@ -95,10 +95,10 @@ export async function POST(req: Request) {
       const end = start + 100;
       return result.data.slice(start, end);
     });
-    let i = 0,
-      j = 0;
+    var i = 0;
     while (i < tempArray.length) {
       var data: any = [];
+      var j=0;
       while (j < tempArray[i].length) {
         if ("" !== tempArray[i][j]["Usuario asignado"]) {
           var usuarioAsignados = usuarios.filter(
@@ -129,145 +129,6 @@ export async function POST(req: Request) {
         data,
         skipDuplicates: true,
       });
-      i++;
-    }
-
-    while (i < result.data.length) {
-      var row = result.data[i];
-      if ("" !== row["Usuario asignado"]) {
-        var usuarioAsignado = await prisma.user.findFirst({
-          where: {
-            email: String(row["Usuario asignado"]),
-          },
-        });
-
-        if (usuarioAsignado) {
-          userId = usuarioAsignado.id;
-        } else {
-          userId;
-        }
-      }
-      const { id } = row;
-      var countryId = "UY";
-      var country = await prisma.country.findFirst({
-        where: { name: row["País"] },
-      });
-      if (country) {
-        countryId = country.id;
-      }
-      var identification =
-        row["Tipo Documento"] == "" ? 0 : +row["Tipo Documento"];
-      try {
-        if (id) {
-          //Actualizar
-          client = await prisma.client.update({
-            where: { id },
-            data: {
-              name: row["Nombre"],
-              lastName: row["Apellido"],
-              phone: row["Número de Contacto"],
-              email: row["Correo Electrónico"],
-              address: row["Dirección"],
-              city: row["Ciudad"],
-              state: row["Estado"],
-              identification,
-              countryId,
-              userId,
-            },
-          });
-        } else {
-          //Crear
-          client = await prisma.client.create({
-            data: {
-              name: row["Nombre"],
-              lastName: row["Apellido"],
-              phone: row["Número de Contacto"],
-              email: row["Correo Electrónico"],
-              address: row["Dirección"],
-              city: row["Ciudad"],
-              state: row["Estado"],
-              identification,
-              countryId,
-              userId,
-            },
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-
-      /* if ('' == email) {
-                try {
-                    await prisma.client.upsert({
-                        where: {
-                            email: `${row['Nombre']}.${row['Apellido']}`.toLowerCase().replace(/\s/g, '') + '@carasycaretas.com.uy',
-                        },
-                        create: {
-                            name: String(row['Nombre']),
-                            lastName: String(row['Apellido']),
-                            identification: '' === row['Número Documento'] ? 0 : parseInt(row['Número Documento']),
-                            identificationType: '' === row['Tipo Documento'] ? 'Cedula' : 'Pasaporte',
-                            phone: String(row['Número de Contacto']),
-                            email: `${row['Nombre']}.${row['Apellido']}`.toLowerCase().replace(/\s/g, '') + '@carasycaretas.com.uy',
-                            address: String(row['Dirección']),
-                            city: String(row['Ciudad']),
-                            countryId: 'UY',
-                            userId: userId,
-
-                        },
-                        update: {
-                            name: String(row['Nombre']),
-                            lastName: String(row['Apellido']),
-                            identification: '' === row['Número Documento'] ? 0 : parseInt(row['Número Documento']),
-                            identificationType: '' === row['Tipo Documento'] ? 'Cedula' : 'Pasaporte',
-                            phone: String(row['Número de Contacto']),
-                            address: String(row['Dirección']),
-                            city: String(row['Ciudad']),
-                            countryId: 'UY',
-                            userId: userId
-                        }
-                    })
-
-                } catch (error) {
-                    console.log(error)
-                    return NextResponse.json('Error al importar datos', { status: 201 });
-                }
-            } else {
-                try {
-                    await prisma.client.upsert({
-                        where: { email },
-                        create: {
-                            name: row['Nombre'],
-                            lastName: row['Apellido'],
-                            identification: row['Número Documento'] ? parseInt(row['Número Documento']) : 0,
-                            identificationType: row['Tipo Documento'] ? row['Tipo Documento'] : 'Cedula',
-                            phone: row['Número de Contacto'],
-                            email: row['Correo Electrónico']
-                                ? String(row['Correo Electrónico'])
-                                //: `${row['Nombre'].toLowerCase()}.${row['Apellido'].toLowerCase()}@carasycaretas.com.uy`,
-                                : `${row['Nombre']}.${row['Apellido']}`.toLowerCase().replace(/\s/g, '') + '@carasycaretas.com.uy',
-                            address: row['Dirección'],
-                            city: row['Ciudad'],
-                            countryId: 'UY',
-                            userId: userId
-                        },
-                        update: {
-                            name: row['Nombre'],
-                            lastName: row['Apellido'],
-                            identification: row['Número Documento'] ? parseInt(row['Número Documento']) : 0,
-                            identificationType: row['Tipo Documento'] ? row['Tipo Documento'] : 'Cedula',
-                            phone: row['Número de Contacto'],
-                            address: row['Dirección'],
-                            city: row['Ciudad'],
-                            countryId: 'UY',
-                            userId: userId
-                        }
-                    })
-                } catch (error) {
-                    console.log(error)
-                    return NextResponse.json('Error al importar datos', { status: 201 });
-                }
-            } */
       i++;
     }
     revalidatePath("/clients/");
