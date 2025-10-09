@@ -191,7 +191,8 @@ export async function POST(req: Request) {
             var data: any = []
             var client = await prisma.client.findUnique({
                 where: {
-                    email: row['email cliente']
+                    //email: row['email cliente']
+                    id: row['id']
                 }
             });
 
