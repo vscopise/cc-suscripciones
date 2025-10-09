@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     ),
     Card: z.array(
       z.object({
-        "Correo Electrónico": z.string().email(),
+        "Correo Electrónico": z.string().optional(),
         Número: z.string(),
         //'Vencimiento': z.string().regex(new RegExp(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0,1,2])\/(19|20)\d{2}$/)).nullish(),
         Vencimiento: z.string().optional(),
@@ -98,7 +98,7 @@ export async function POST(req: Request) {
     var i = 0;
     while (i < tempArray.length) {
       var data: any = [];
-      var j=0;
+      var j = 0;
       while (j < tempArray[i].length) {
         if ("" !== tempArray[i][j]["Usuario asignado"]) {
           var usuarioAsignados = usuarios.filter(
@@ -122,15 +122,14 @@ export async function POST(req: Request) {
           userId,
         });
         j++;
-
-        //prisma.createMany
       }
-      let createMany = await prisma.client.createMany({
+      await prisma.client.createMany({
         data,
         skipDuplicates: true,
       });
       i++;
     }
+
     revalidatePath("/clients/");
   } else if (key === "Subscription") {
     while (i < result.data.length) {
@@ -179,48 +178,50 @@ export async function POST(req: Request) {
 
     revalidatePath("/subscriptions/");
   } else if (key === "Card") {
-    var data: any = [];
-    while (i < result.data.length) {
-      var row = result.data[i];
+    const numberOfChunks = Math.ceil(result.data.length / 100);
+
+    const tempArray = Array.from({ length: numberOfChunks }, (_, index) => {
+      const start = index * 100;
+      const end = start + 100;
+      return result.data.slice(start, end);
+    });
+
+    var i = 0;
+
+    while (i < tempArray.length) {
       var data: any = [];
-
-      try {
-        var client = await prisma.client.findUnique({
+      var j = 0;
+      while (j < tempArray[i].length) {
+        var expiration = tempArray[i][j]["Vencimiento"].replace(
+          /(\d+[/])(\d+[/])/,
+          "$2$1"
+        );
+        var client = await prisma.client.findFirst({
           where: {
-            //email: row['Correo Electrónico']
-            id: row["id"],
+            email: tempArray[i][j]["Correo Electrónico"],
           },
         });
-
         if (!client)
-          return NextResponse.json("Cliente no registrado", { status: 201 });
+          return NextResponse.json(
+            `${tempArray[i][j]["Correo Electrónico"]} no registrado`,
+            { status: 201 }
+          );
 
-        var expiration = row["Vencimiento"].replace(/(\d+[/])(\d+[/])/, "$2$1");
-
-        await prisma.creditCard.upsert({
-          where: {
-            number: parseInt(row["Número"]),
-          },
-          create: {
-            number: parseInt(row["Número"]),
-            expiration:
-              "" === expiration ? new Date("01/01/1900") : new Date(expiration),
-            cvv: "" === row["CVV"] ? 999 : parseInt(row["CVV"]),
-            clientId: client.id,
-          },
-          update: {
-            expiration:
-              "" === expiration ? new Date("01/01/1900") : new Date(expiration),
-            cvv: "" === row["CVV"] ? 999 : parseInt(row["CVV"]),
-            clientId: client.id,
-          },
+        data.push({
+          number: +tempArray[i][j]["Número"],
+          cvv: tempArray[i][j]["CVV"],
+          clientId: client.id,
+          expiration,
         });
-      } catch (error) {
-        console.log(error);
-        return NextResponse.json("Error al importar datos", { status: 201 });
+        j++;
       }
+      await prisma.creditCard.createMany({
+        data,
+        skipDuplicates: true,
+      });
       i++;
     }
+
   }
 
   return NextResponse.json("Archivo subido correctamente", { status: 200 });
