@@ -86,6 +86,51 @@ export async function POST(req: Request) {
   var i = 0;
 
   if (key === "Client") {
+    const numberOfChunks = Math.ceil(result.data.length / 100);
+
+    const usuarios = await prisma.user.findMany();
+
+    const tempArray = Array.from({ length: numberOfChunks }, (_, index) => {
+      const start = index * 100;
+      const end = start + 100;
+      return result.data.slice(start, end);
+    });
+    let i = 0,
+      j = 0;
+    while (i < tempArray.length) {
+      var data = [];
+      while (j < tempArray[i].length) {
+        if ("" !== tempArray[i][j]["Usuario asignado"]) {
+          var usuarioAsignados = usuarios.filter(
+            (u) => u.email === tempArray[i][j]["Usuario asignado"]
+          );
+
+          if (usuarioAsignados.length != 0) {
+            userId = usuarioAsignados[0].id;
+          }
+        }
+        data.push({
+          name: tempArray[i][j]["Nombre"],
+          lastName: tempArray[i][j]["Apellido"],
+          phone: tempArray[i][j]["Número de Contacto"],
+          email: tempArray[i][j]["Correo Electrónico"],
+          address: tempArray[i][j]["Dirección"],
+          city: tempArray[i][j]["Ciudad"],
+          state: tempArray[i][j]["Estado"],
+          //identification: '',
+          countryId: "UY",
+          userId,
+        });
+        j++;
+
+        //prisma.createMany
+      }
+      let createMany = prisma.client.createMany({
+        data, skipDuplicates: true,
+      })
+      i++;
+    }
+
     while (i < result.data.length) {
       var row = result.data[i];
       if ("" !== row["Usuario asignado"]) {
