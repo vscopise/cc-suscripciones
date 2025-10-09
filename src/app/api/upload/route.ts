@@ -35,6 +35,7 @@ export async function POST(req: Request) {
     //Validación de datos
     const schema: any = {
         Client: z.array(z.object({
+            'id': z.string().uuid().optional().nullable(),
             'Nombre': z.string().optional(),
             'Apellido': z.string().optional(),
             'Tipo Documento': z.string().optional(),
@@ -89,7 +90,27 @@ export async function POST(req: Request) {
                 if(usuarioAsignado) userId = usuarioAsignado.id;
 
             }
-            if ('' == email) {
+            const {id, ...rest} = row;
+
+            if (id) {
+                //Actualizar
+                client = await prisma.client.update({
+                    where: {id},
+                    data: {
+                        ...rest
+                    }
+                })
+
+            } else {
+                //Crear
+                client = await prisma.client.create({
+                    data: {
+                        ...rest
+                    }
+                })
+            }
+
+            /* if ('' == email) {
                 try {
                     await prisma.client.upsert({
                         where: {
@@ -160,7 +181,7 @@ export async function POST(req: Request) {
                     console.log(error)
                     return NextResponse.json('Error al importar datos', { status: 201 });
                 }
-            }
+            } */
             i++;
         }
         revalidatePath('/clients/');

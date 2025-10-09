@@ -74,7 +74,7 @@ model Client {
   identification     Int                @default(0)
   identificationType IdentificationType @default(Cedula)
   phone              String             @default("")
-  email              String             @unique
+  email              String             @default("")
   address            String             @default("")
   city               String             @default("")
   state              String             @default("")
