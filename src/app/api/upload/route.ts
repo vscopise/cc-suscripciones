@@ -125,7 +125,7 @@ export async function POST(req: Request) {
 
         //prisma.createMany
       }
-      let createMany = prisma.client.createMany({
+      let createMany = await prisma.client.createMany({
         data,
         skipDuplicates: true,
       });
