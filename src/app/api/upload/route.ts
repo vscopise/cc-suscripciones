@@ -237,7 +237,8 @@ export async function POST(req: Request) {
             try {
                 var client = await prisma.client.findUnique({
                     where: {
-                        email: row['Correo Electrónico']
+                        //email: row['Correo Electrónico']
+                        id: row['id']
                     }
                 });
 
