@@ -98,7 +98,7 @@ export async function POST(req: Request) {
     let i = 0,
       j = 0;
     while (i < tempArray.length) {
-      var data = [];
+      var data: any = [];
       while (j < tempArray[i].length) {
         if ("" !== tempArray[i][j]["Usuario asignado"]) {
           var usuarioAsignados = usuarios.filter(
@@ -126,8 +126,9 @@ export async function POST(req: Request) {
         //prisma.createMany
       }
       let createMany = prisma.client.createMany({
-        data, skipDuplicates: true,
-      })
+        data,
+        skipDuplicates: true,
+      });
       i++;
     }
 
