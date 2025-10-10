@@ -208,11 +208,12 @@ export async function POST(req: Request) {
             { status: 201 }
           );
 
+        var cvv = "" != tempArray[i][j]["CVV"] ? +tempArray[i][j]["CVV"] : undefined;
+
         data.push({
           number: +tempArray[i][j]["Número"],
-          cvv: tempArray[i][j]["CVV"],
           clientId: client.id,
-          expiration,
+          expiration, cvv
         });
         j++;
       }
