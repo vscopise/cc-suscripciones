@@ -123,9 +123,9 @@ model Subscription {
 
 model CreditCard {
   id         String   @id @default(uuid())
-  number     BigInt   @unique
-  expiration DateTime
-  cvv        Int?
+  number     String
+  expiration String
+  cvv        String?
 
   client   Client @relation(fields: [clientId], references: [id])
   clientId String
