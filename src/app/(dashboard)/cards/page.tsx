@@ -20,7 +20,7 @@ export default async function CardsPage({ searchParams }: Props) {
     const email = searchParams?.email || '';
     const name = searchParams?.name || '';
     const page = searchParams.page ? parseInt(searchParams.page) : 1;
-    const take = searchParams.take ? parseInt(searchParams.take) : 10;
+    const take = searchParams.take ? parseInt(searchParams.take) : 20;
 
     const session = await auth();
     if (session?.user.role !== 'admin') {

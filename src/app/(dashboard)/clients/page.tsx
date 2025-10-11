@@ -23,7 +23,7 @@ export default async function ClientsPage({ searchParams }: Props) {
     const email = searchParams?.email || '';
     const subscriptions = searchParams?.subscriptions || 'all';
     const page = searchParams.page ? parseInt(searchParams.page) : 1;
-    const take = searchParams.take ? parseInt(searchParams.take) : 10;
+    const take = searchParams.take ? parseInt(searchParams.take) : 20;
 
     const orderby = searchParams?.orderby || 'name';
     const order = searchParams.order=== 'asc' ? 'asc' : 'desc';

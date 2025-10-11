@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ClientsTableItem } from "./ClientsTableItem";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import { truncateString } from "@/utils";
 
 interface Props {
   clients: any[];
@@ -91,7 +92,7 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
                   href={`/client/${client.id}`}
                   className="hover:underline px-4 py-4 block"
                 >
-                  {`${client.name} ${client.lastName}`}
+                  {truncateString(`${client.name} ${client.lastName}`, 20)}
                 </Link>
               </td>
               <td className="text-sm  font-light whitespace-nowrap">
@@ -99,7 +100,7 @@ export const ClientsTable = ({ clients, users, isAdmin }: Props) => {
                   href={`/client/${client.id}`}
                   className="hover:underline px-4 py-4 block"
                 >
-                  {client.email}
+                  {truncateString(`${client.email}`, 20)}
                 </Link>
               </td>
               <td className="text-sm  font-light whitespace-nowrap">
