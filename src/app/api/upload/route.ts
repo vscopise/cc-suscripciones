@@ -193,27 +193,25 @@ export async function POST(req: Request) {
       var data: any = [];
       var j = 0;
       while (j < tempArray[i].length) {
-        var expiration = tempArray[i][j]["Vencimiento"].replace(
-          /(\d+[/])(\d+[/])/,
-          "$2$1"
-        );
+        
+        var expiration = tempArray[i][j]["Vencimiento"];
         var client = await prisma.client.findFirst({
           where: {
             email: tempArray[i][j]["Correo Electrónico"],
           },
         });
+        var number = tempArray[i][j]["Número"];
         if (!client)
           return NextResponse.json(
             `${tempArray[i][j]["Correo Electrónico"]} no registrado`,
             { status: 201 }
           );
 
-        var cvv = "" != tempArray[i][j]["CVV"] ? +tempArray[i][j]["CVV"] : undefined;
+        var cvv = tempArray[i][j]["CVV"];
 
         data.push({
-          number: +tempArray[i][j]["Número"],
           clientId: client.id,
-          expiration, cvv
+          number, expiration, cvv
         });
         j++;
       }
