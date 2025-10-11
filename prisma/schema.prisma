@@ -125,7 +125,7 @@ model CreditCard {
   id         String   @id @default(uuid())
   number     String
   expiration String
-  cvv        String?
+  cvv        String
 
   client   Client @relation(fields: [clientId], references: [id])
   clientId String

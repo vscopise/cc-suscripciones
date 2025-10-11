@@ -1,4 +1,4 @@
-export const getCreditCardType = (cardNumber:bigint) => {
+export const getCreditCardType = (cardNumber:string) => {
 
     if (!cardNumber) return '';
     

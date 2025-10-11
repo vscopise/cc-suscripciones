@@ -7,11 +7,11 @@ import { z } from 'zod';
 
 
 const cardSchema = z.object({
-    cvv: z.coerce.number().min(0).transform(val => Number(val)).optional(),
+    cvv: z.string(),
     clientId: z.string(),
-    expiration: z.date(),
-    id: z.string().optional(),
-    number: z.coerce.number().min(0).transform(val => Number(val)),
+    expiration: z.string(),
+    id: z.string(),
+    number: z.string(),
 });
 
 export const createUpdateCard = async (cardData: CreditCard) => {
