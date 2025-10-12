@@ -1,5 +1,6 @@
 import { auth } from "@/auth.config";
 import prisma from "@/lib/prisma";
+import { convertDdMmYyyyToDate } from "@/utils";
 import { revalidatePath } from "next/cache";
 import { NextResponse, NextRequest } from "next/server";
 import { number, z } from "zod";
@@ -12,6 +13,7 @@ export async function POST(req: Request) {
   const session = await auth();
 
   var userId = session!.user.id;
+  var planId = "";
 
   const body = await req.json();
 
@@ -64,8 +66,8 @@ export async function POST(req: Request) {
     Subscription: z.array(
       z.object({
         "email cliente": z.string().email(),
-        inicio: z.string().date().nullish().or(z.string().max(0)),
-        "último pago": z.string().date().nullish().or(z.string().max(0)),
+        inicio: z.string().optional(),
+        "último pago": z.string().optional(),
         plan: z.string().optional(),
         monto: z.string().optional(),
         "método de pago": z.string().optional(),
@@ -132,7 +134,69 @@ export async function POST(req: Request) {
 
     revalidatePath("/clients/");
   } else if (key === "Subscription") {
-    while (i < result.data.length) {
+    const numberOfChunks = Math.ceil(result.data.length / 100);
+
+    const plans = await prisma.plan.findMany();
+
+    const tempArray = Array.from({ length: numberOfChunks }, (_, index) => {
+      const start = index * 100;
+      const end = start + 100;
+      return result.data.slice(start, end);
+    });
+
+    var i = 0;
+
+    while (i < tempArray.length) {
+      var data: any = [];
+      var j = 0;
+      while (j < tempArray[i].length) {
+        var client = await prisma.client.findFirst({
+          where: {
+            email: tempArray[i][j]["email cliente"],
+          },
+        });
+
+        if (!client)
+          return NextResponse.json(
+            `${tempArray[i][j]["email cliente"]} no registrado`,
+            { status: 201 }
+          );
+
+        if ("" !== tempArray[i][j]["plan"]) {
+          var userPlans = plans.filter(
+            (p) => p.name === tempArray[i][j]["plan"]
+          );
+
+          if(userPlans.length != 0) {
+            planId = userPlans[0].id;
+          }
+        }
+
+        var dateStart = convertDdMmYyyyToDate(tempArray[i][j]["inicio"]);
+        var dateLastPay = convertDdMmYyyyToDate(tempArray[i][j]["último pago"]);
+
+        data.push({
+          amount: +tempArray[i][j]["monto"] ,
+          clientId: client.id,
+          comment: tempArray[i][j]["comentarios"],
+          delivery: tempArray[i][j]["repartidor"],
+          dateStart,
+          dateLastPay,
+          paymentMethod: tempArray[i][j]["método de pago"],
+          period: tempArray[i][j]["período de pago"],
+          planId,
+        });
+
+        j++;
+      }
+      await prisma.subscription.createMany({
+        data,
+        skipDuplicates: true,
+      });
+      i++;
+    }
+
+    /* while (i < result.data.length) {
       var row = result.data[i];
       var data: any = [];
       var client = await prisma.client.findUnique({
@@ -174,13 +238,12 @@ export async function POST(req: Request) {
       });
     } catch (error) {
       return NextResponse.json("Error al importar datos", { status: 201 });
-    }
+    } */
 
     revalidatePath("/subscriptions/");
   } else if (key === "Card") {
     const numberOfChunks = Math.ceil(result.data.length / 100);
 
-    
     const tempArray = Array.from({ length: numberOfChunks }, (_, index) => {
       const start = index * 100;
       const end = start + 100;
@@ -193,7 +256,6 @@ export async function POST(req: Request) {
       var data: any = [];
       var j = 0;
       while (j < tempArray[i].length) {
-        
         var expiration = tempArray[i][j]["Vencimiento"];
         var client = await prisma.client.findFirst({
           where: {
@@ -211,7 +273,9 @@ export async function POST(req: Request) {
 
         data.push({
           clientId: client.id,
-          number, expiration, cvv
+          number,
+          expiration,
+          cvv,
         });
         j++;
       }
@@ -221,7 +285,6 @@ export async function POST(req: Request) {
       });
       i++;
     }
-
   }
 
   return NextResponse.json("Archivo subido correctamente", { status: 200 });
