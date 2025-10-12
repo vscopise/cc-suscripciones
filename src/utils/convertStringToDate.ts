@@ -1,4 +1,4 @@
-export const convertDdMmYyyyToDate = (dateString: string) => {
+export const convertDdMmYyyyToDate = (dateString = "1/1/00") => {
   // Split the string into day, month, and year parts
   const parts = dateString.split("/");
 
