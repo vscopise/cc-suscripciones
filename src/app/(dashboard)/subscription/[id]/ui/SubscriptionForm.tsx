@@ -29,10 +29,13 @@ interface FormInputs {
   planId: string | null;
   // paymentMethod: 'MercadoPago' | 'FirstData' | 'Visa' | 'Stripe' | 'Multipago' | 'CobroYa' | 'TransferenciaBancaria' | 'AbitabNet' | 'Efectivo';
   period: 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual';
-  paymentMethod:  'AbitabNet' |
+  paymentMethod:  
+    'AbitabNet' |
+    'Brou' |
     'BrouDebito' |
     'CobroYa' |
     'Efectivo' |
+    'Factura' |
     'FirstData' |
     'Gentileza' |
     'MercadoPago' |
@@ -40,6 +43,7 @@ interface FormInputs {
     'Passcard' |
     'PaypalWesternUnion' |
     'Stripe' |
+    'StripeMercadoPago' |
     'TransferenciaBancaria' |
     'Visa'
   }
@@ -48,9 +52,11 @@ const periods = ['Mensual', 'Trimestral', 'Semestral', 'Anual'];
 
 const paymentMethods = [
   { label: 'Abitab Net', value: 'AbitabNet' },
+  { label: 'Brou', value: 'Brou' },
   { label: 'Brou Débito', value: 'BrouDebito' },
   { label: 'Cobro Ya', value: 'CobroYa' },
   { label: 'Efectivo', value: 'Efectivo' },
+  { label: 'Factura', value: 'Factura' },
   { label: 'First Data', value: 'FirstData' },
   { label: 'Gentileza', value: 'Gentileza' },
   { label: 'Mercado Pago', value: 'MercadoPago' },
@@ -58,6 +64,7 @@ const paymentMethods = [
   { label: 'Passcard', value: 'Passcard' },
   { label: 'Paypal / Western Union', value: 'PaypalWesternUnion' },
   { label: 'Stripe', value: 'Stripe' },
+  { label: 'Stripe Mercado Pago', value: 'StripeMercadoPago' },
   { label: 'Transferencia Bancaria', value: 'TransferenciaBancaria' },
   { label: 'Visa', value: 'Visa' },
 ];

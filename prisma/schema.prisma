@@ -33,9 +33,11 @@ enum Period {
 
 enum PaymentMethod {
   AbitabNet
+  Brou
   BrouDebito
   CobroYa
   Efectivo
+  Factura
   FirstData
   Gentileza
   MercadoPago
@@ -43,6 +45,7 @@ enum PaymentMethod {
   Passcard
   PaypalWesternUnion
   Stripe
+  StripeMercadoPago
   TransferenciaBancaria
   Visa
 }
