@@ -168,7 +168,7 @@ export async function POST(req: Request) {
             (p) => p.name === tempArray[i][j]["plan"]
           );
 
-          if(userPlans.length != 0) {
+          if (userPlans.length != 0) {
             planId = userPlans[0].id;
           }
         }
@@ -177,7 +177,7 @@ export async function POST(req: Request) {
         var dateLastPay = convertDdMmYyyyToDate(tempArray[i][j]["último pago"]);
 
         data.push({
-          amount: +tempArray[i][j]["monto"] ,
+          amount: +tempArray[i][j]["monto"],
           clientId: client.id,
           comment: tempArray[i][j]["comentarios"],
           delivery: tempArray[i][j]["repartidor"],
@@ -190,10 +190,14 @@ export async function POST(req: Request) {
 
         j++;
       }
-      await prisma.subscription.createMany({
-        data,
-        skipDuplicates: true,
-      });
+      try {
+        await prisma.subscription.createMany({
+          data,
+          skipDuplicates: true,
+        });
+      } catch (error) {
+        console.log(error);
+      }
       i++;
     }
 
