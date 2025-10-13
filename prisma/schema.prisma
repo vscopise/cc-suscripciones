@@ -41,7 +41,7 @@ enum PaymentMethod {
   FirstData
   Gentileza
   MercadoPago
-  Multipago
+  Multipagos
   Passcard
   PaypalWesternUnion
   Stripe

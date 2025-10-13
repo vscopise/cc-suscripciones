@@ -60,7 +60,7 @@ const paymentMethods = [
   { label: 'First Data', value: 'FirstData' },
   { label: 'Gentileza', value: 'Gentileza' },
   { label: 'Mercado Pago', value: 'MercadoPago' },
-  { label: 'Multipago', value: 'Multipago' },
+  { label: 'Multipagos', value: 'Multipagos' },
   { label: 'Passcard', value: 'Passcard' },
   { label: 'Paypal / Western Union', value: 'PaypalWesternUnion' },
   { label: 'Stripe', value: 'Stripe' },
