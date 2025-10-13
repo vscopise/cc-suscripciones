@@ -22,7 +22,7 @@ export default async function SubscriptionsPage({ searchParams }: Props) {
     const client = searchParams?.client || '';
     const status = searchParams?.status || 'all';
     const page = searchParams.page ? parseInt(searchParams.page) : 1;
-    const take = searchParams.take ? parseInt(searchParams.take) : 10;
+    const take = searchParams.take ? parseInt(searchParams.take) : 20;
 
     const session = await auth();
     const isAdmin = session?.user.role === 'admin';
