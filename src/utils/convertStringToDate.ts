@@ -11,7 +11,7 @@ export const convertDdMmYyyyToDate = (dateString = "01/01/00") => {
   const day = parseInt(parts[0], 10);
   // Month in JavaScript Date object is 0-indexed (0 for January, 11 for December)
   const month = parseInt(parts[1], 10) - 1;
-  const year = parseInt(parts[2], 10);
+  const year = parseInt('20' + parts[2], 10);
 
   // Create a new Date object
   // The Date constructor takes year, month (0-indexed), and day
