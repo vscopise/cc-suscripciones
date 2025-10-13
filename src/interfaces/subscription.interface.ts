@@ -10,16 +10,19 @@ export interface Subscription {
     id: string;
     // paymentMethod: 'MercadoPago' | 'FirstData' | 'Visa' | 'Stripe' | 'Multipago' | 'CobroYa' | 'TransferenciaBancaria' | 'AbitabNet' | 'Efectivo',
     paymentMethod:  'AbitabNet' |
+    'Brou' |
     'BrouDebito' |
     'CobroYa' |
     'Efectivo' |
+    'Factura' |
     'FirstData' |
     'Gentileza' |
     'MercadoPago' |
-    'Multipago' |
+    'Multipagos' |
     'Passcard' |
     'PaypalWesternUnion' |
     'Stripe' |
+    'StripeMercadoPago' |
     'TransferenciaBancaria' |
     'Visa';
     period: 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual';

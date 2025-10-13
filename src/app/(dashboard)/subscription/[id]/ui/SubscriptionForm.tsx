@@ -39,7 +39,7 @@ interface FormInputs {
     'FirstData' |
     'Gentileza' |
     'MercadoPago' |
-    'Multipago' |
+    'Multipagos' |
     'Passcard' |
     'PaypalWesternUnion' |
     'Stripe' |

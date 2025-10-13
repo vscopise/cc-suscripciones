@@ -1,6 +1,7 @@
 import { auth } from "@/auth.config";
 import prisma from "@/lib/prisma";
 import { convertDdMmYyyyToDate } from "@/utils";
+import { PaymentMethod } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { NextResponse, NextRequest } from "next/server";
 import { number, z } from "zod";
@@ -182,7 +183,7 @@ export async function POST(req: Request) {
           delivery: tempArray[i][j]["repartidor"],
           dateStart,
           dateLastPay,
-          paymentMethod: tempArray[i][j]["método de pago"],
+          paymentMethod: tempArray[i][j]["método de pago"] as PaymentMethod,
           period: tempArray[i][j]["período de pago"],
           planId,
         });
