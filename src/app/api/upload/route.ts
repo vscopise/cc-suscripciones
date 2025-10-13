@@ -139,6 +139,8 @@ export async function POST(req: Request) {
 
     const plans = await prisma.plan.findMany();
 
+    const clients = await prisma.client.findMany();
+
     const tempArray = Array.from({ length: numberOfChunks }, (_, index) => {
       const start = index * 100;
       const end = start + 100;
@@ -150,18 +152,22 @@ export async function POST(req: Request) {
     while (i < tempArray.length) {
       var data: any = [];
       var j = 0;
+      var clientId = "";
       while (j < tempArray[i].length) {
-        var client = await prisma.client.findFirst({
-          where: {
-            email: tempArray[i][j]["email cliente"],
-          },
-        });
-
-        if (!client)
-          return NextResponse.json(
-            `${tempArray[i][j]["email cliente"]} no registrado`,
-            { status: 201 }
+        if ("" !== tempArray[i][j]["email cliente"]) {
+          var clienteAsignado = clients.filter(
+            (c) => c.email === tempArray[i][j]["email cliente"]
           );
+
+          if (clienteAsignado.length != 0) {
+            clientId = clienteAsignado[0].id;
+          } else {
+            return NextResponse.json(
+              `${tempArray[i][j]["email cliente"]} no registrado`,
+              { status: 201 }
+            );
+          }
+        }
 
         if ("" !== tempArray[i][j]["plan"]) {
           var userPlans = plans.filter(
@@ -178,7 +184,7 @@ export async function POST(req: Request) {
 
         data.push({
           amount: +tempArray[i][j]["monto"],
-          clientId: client.id,
+          clientId,
           comment: tempArray[i][j]["comentarios"],
           delivery: tempArray[i][j]["repartidor"],
           dateStart,
