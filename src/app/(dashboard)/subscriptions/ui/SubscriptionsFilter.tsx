@@ -2,6 +2,7 @@
 
 import { getFilteredSubscriptions } from "@/actions";
 import { useUIStore } from "@/store/ui";
+import { PaymentMethod } from "@prisma/client";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
@@ -11,16 +12,37 @@ interface Props {
   active: string;
   client: string;
   status: string;
+  paymentmethod: string;
   page: number;
   take: number;
   isAdmin: boolean;
   subscriptions: any[];
 }
 
+const paymentMethods = [
+  { label: "Abitab Net", value: "AbitabNet" },
+  { label: "Brou", value: "Brou" },
+  { label: "Brou Débito", value: "BrouDebito" },
+  { label: "Cobro Ya", value: "CobroYa" },
+  { label: "Efectivo", value: "Efectivo" },
+  { label: "Factura", value: "Factura" },
+  { label: "First Data", value: "FirstData" },
+  { label: "Gentileza", value: "Gentileza" },
+  { label: "Mercado Pago", value: "MercadoPago" },
+  { label: "Multipagos", value: "Multipagos" },
+  { label: "Passcard", value: "Passcard" },
+  { label: "Paypal / Western Union", value: "PaypalWesternUnion" },
+  { label: "Stripe", value: "Stripe" },
+  { label: "Stripe Mercado Pago", value: "StripeMercadoPago" },
+  { label: "Transferencia Bancaria", value: "TransferenciaBancaria" },
+  { label: "Visa", value: "Visa" },
+];
+
 export const SubscriptionsFilter = ({
   active,
   client,
   status,
+  paymentmethod,
   page,
   take,
 }: Props) => {
@@ -48,6 +70,7 @@ export const SubscriptionsFilter = ({
       active,
       client,
       status,
+      paymentmethod,
       page,
       take,
     });
@@ -125,7 +148,7 @@ export const SubscriptionsFilter = ({
       </div>
       <div className="flex px-5 justify-between items-center w-full">
         <div className="-mx-3 flex flex-wrap w-full">
-          <div className=" px-3 w-1/3">
+          <div className=" px-3 w-1/4">
             <div className="mb-5">
               <select
                 className="form-control form-select"
@@ -138,7 +161,7 @@ export const SubscriptionsFilter = ({
               </select>
             </div>
           </div>
-          <div className=" px-3 w-1/3">
+          <div className=" px-3 w-1/4">
             <div className="mb-5">
               <input
                 className="form-control"
@@ -148,7 +171,7 @@ export const SubscriptionsFilter = ({
               />
             </div>
           </div>
-          <div className=" px-3 w-1/3">
+          <div className=" px-3 w-1/4">
             <div className="mb-5">
               <div className="mb-5">
                 <select
@@ -167,6 +190,21 @@ export const SubscriptionsFilter = ({
                   </option>
                 </select>
               </div>
+            </div>
+          </div>
+          <div className=" px-3 w-1/4">
+            <div className="mb-5">
+              <select
+                className="form-control form-select"
+                onChange={(e) => handleFilter(e.target.value, "paymentmethod")}
+              >
+                <option value="all">Método de Pago ?</option>
+                {paymentMethods.map((p) => (
+                  <option key={p.value} value={p.value}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>

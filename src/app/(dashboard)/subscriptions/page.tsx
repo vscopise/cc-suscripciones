@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { Pagination, Title } from '@/components';
 import { SubscriptionsTable } from './ui/SubscriptionsTable';
 import { SubscriptionsFilter } from './ui/SubscriptionsFilter';
+import { PaymentMethod } from '@prisma/client';
 
 interface Props {
     searchParams: {
         active?: string;
         client?: string;
         status?: string;
+        paymentmethod?: string;
         page?: string;
         take?: string;
     }
@@ -21,6 +23,7 @@ export default async function SubscriptionsPage({ searchParams }: Props) {
     const active = searchParams?.active || 'all';
     const client = searchParams?.client || '';
     const status = searchParams?.status || 'all';
+    const paymentmethod = searchParams?.paymentmethod || 'all';
     const page = searchParams.page ? parseInt(searchParams.page) : 1;
     const take = searchParams.take ? parseInt(searchParams.take) : 20;
 
@@ -33,6 +36,7 @@ export default async function SubscriptionsPage({ searchParams }: Props) {
         status,
         /*status, subscriber,*/ 
         client, 
+        paymentmethod,
         page, 
         take 
     });
@@ -56,6 +60,7 @@ export default async function SubscriptionsPage({ searchParams }: Props) {
                     take={take}
                     status={status}
                     client={client}
+                    paymentmethod={paymentmethod}
                     subscriptions={subscriptions} 
                     isAdmin={isAdmin}
                 />

@@ -1,20 +1,26 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { PaymentMethod } from '@prisma/client';
+import { error } from 'console';
 
 interface Props {
     active: string;
     client: string;
     status: string;
+    paymentmethod: string;
     page: number;
     take: number;
     //isAdmin: boolean,
     //userId: string,
 }
 
-export const getFilteredSubscriptions = async ({ active, client, status, page = 1, take = 10 }: Props) => {
+export const getFilteredSubscriptions = async ({ active, client, status, paymentmethod="", page = 1, take = 10 }: Props) => {
     if (isNaN(Number(page))) page = 1;
     if (page < 1) page = 1;
+    if(!paymentmethod) paymentmethod = "";
+
+    var pMethod: PaymentMethod = PaymentMethod[paymentmethod as keyof typeof PaymentMethod]
 
     const today = new Date();
     const checkDate = new Date(new Date().setMonth(today.getMonth() - 3));
@@ -87,6 +93,7 @@ export const getFilteredSubscriptions = async ({ active, client, status, page = 
                 ...(active === '1' ? { dateDeactivation: { gt: checkDate } } : {}),
                 ...(active === '2' ? { dateDeactivation: { lte: checkDate } } : {}),
                 ...(client !== '' ? { client: { email: { contains: client } } } : {}),
+                ...(paymentmethod !== '' ? { paymentMethod: pMethod } : {}),
 
                 // Verde
                 ...(status === '1' ? {
