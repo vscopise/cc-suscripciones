@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         }).then(res => res.json());
 
         // obtener detalles del cliente
-        const customer = await await fetch(`${mpUrl}/customers/${payment.payer.id}`, {
+        const customer = await fetch(`${mpUrl}/customers/${payment.payer.id}`, {
             headers: {
                 'Authorization': `Bearer ${process.env.MP_TOKEN}`
             }
