@@ -16,6 +16,8 @@ export async function POST() {
       }
     ).then((res) => res.json());
 
+    console.log({response})
+
     const total = response.paging.total;
 
     if (30 < total) {
