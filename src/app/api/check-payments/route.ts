@@ -5,6 +5,8 @@ import { Subscription } from "../../../interfaces/subscription.interface";
 const mpUrl = process.env.MP_URL;
 const mpToken = process.env.MP_TOKEN;
 
+console.log({mpToken})
+
 export async function POST() {
   try {
     const response = await fetch(
@@ -16,7 +18,7 @@ export async function POST() {
       }
     ).then((res) => res.json());
 
-    console.log({response})
+    
 
     const total = response.paging.total;
 
