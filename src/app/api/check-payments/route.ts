@@ -11,19 +11,19 @@ console.log({mpToken}); */
 export async function POST() {
   try {
     const response = await fetch(
-      `${mpUrl}payments/search?begin_date=NOW-1DAY&end_date=NOW`,
+      `${mpUrl}/payments/search?begin_date=NOW-1DAY&end_date=NOW`,
       {
         headers: {
-          Authorization: `Bearer ${mpToken}`,
+          Authorization: `Bearer ${process.env.MP_TOKEN}`,
         },
       }
     ).then((res) => res.json());
 
-    console.log({response});
+    console.log({ response });
 
     const total = response.paging.total;
 
-    console.log({total});
+    console.log({ total });
 
     if (30 < total) {
       let page = 1;
