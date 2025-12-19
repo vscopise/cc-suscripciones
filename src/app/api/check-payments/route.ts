@@ -14,7 +14,7 @@ export async function POST() {
       `${mpUrl}/payments/search?begin_date=NOW-1DAY&end_date=NOW`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.MP_TOKEN}`,
+          'Authorization': `Bearer ${process.env.MP_TOKEN}`,
         },
       }
     ).then((res) => res.json());
