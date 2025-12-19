@@ -5,7 +5,7 @@ import { Subscription } from "../../../interfaces/subscription.interface";
 const mpUrl = process.env.MP_URL;
 const mpToken = process.env.MP_TOKEN;
 
-export async function GET() {
+export async function POST() {
   try {
     const response = await fetch(
       `${mpUrl}payments/search?begin_date=NOW-1DAY&end_date=NOW`,
@@ -72,7 +72,7 @@ async function process_single_payment(payment: any) {
     });
 
     if (null !== subscription) {
-      console.log({ subscription });
+      //console.log({ subscription });
       const subscriptionId = subscription.id;
       const dateLastPay = payment.date_last_updated;
 
