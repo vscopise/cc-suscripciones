@@ -10,8 +10,11 @@ console.log({mpToken}); */
 
 export async function POST() {
   try {
-    const response = await fetch(
-      `${mpUrl}/payments/search?begin_date=NOW-1DAY&end_date=NOW`,
+    const url = `${mpUrl}/payments/search?begin_date=NOW-1DAY&end_date=NOW`;
+
+    console.log({url});
+
+    const response = await fetch( url,
       {
         headers: {
           'Authorization': `Bearer ${process.env.MP_TOKEN}`,
