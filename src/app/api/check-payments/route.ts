@@ -3,14 +3,15 @@ import { NextResponse, NextRequest } from "next/server";
 import { Subscription } from "../../../interfaces/subscription.interface";
 
 const mpUrl = process.env.MP_URL;
-const mpToken = process.env.MP_TOKEN;
+//const mpToken = process.env.MP_TOKEN;
+const mpToken = 'APP_USR-4982809912353576-012914-22b9b04f0f712fe1d7e2e7ba4d8766aa-349329571';
 
 /* console.log({mpUrl});
 console.log({mpToken}); */
 
 export async function POST() {
   try {
-    const url = `${mpUrl}/payments/search?begin_date=NOW-1DAY&end_date=NOW`;
+    const url = `${mpUrl}payments/search?begin_date=NOW-1DAY&end_date=NOW`;
 
     console.log({url});
 
