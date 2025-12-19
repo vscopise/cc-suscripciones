@@ -3,8 +3,8 @@ import { NextResponse, NextRequest } from "next/server";
 import { Subscription } from "../../../interfaces/subscription.interface";
 
 const mpUrl = process.env.MP_URL;
-//const mpToken = process.env.MP_TOKEN;
-const mpToken = 'APP_USR-4982809912353576-012914-22b9b04f0f712fe1d7e2e7ba4d8766aa-349329571';
+const mpToken = process.env.MP_TOKEN;
+
 
 /* console.log({mpUrl});
 console.log({mpToken}); */
@@ -17,9 +17,12 @@ export async function POST() {
 
     const response = await fetch( url,
       {
+        method: 'GET',
         headers: {
-          'Authorization': `Bearer ${process.env.MP_TOKEN}`,
+          Authorization: `Bearer ${mpToken}`,
+          'Content-Type': 'application/json',
         },
+        cache: 'no-store'
       }
     ).then((res) => res.json());
 
